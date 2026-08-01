@@ -23,6 +23,12 @@ def _normalized_database_url() -> str:
 class BaseConfig:
     SECRET_KEY = os.environ.get("SECRET_KEY", "")
     DATABASE_URL = _normalized_database_url()
+    # When sharing a Postgres database with another app, set DB_SCHEMA to
+    # keep this app's tables (and its alembic version table) fully isolated
+    # in their own schema instead of colliding with the default 'public'
+    # schema. Defaults to 'public' so single-app / local SQLite setups are
+    # unaffected.
+    DB_SCHEMA = os.environ.get("DB_SCHEMA", "public")
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
