@@ -34,4 +34,20 @@ services:
       - key: ALLOWED_FRAME_ANCESTORS
         value: "https://galacticbuilldersllc.com,https://www.galacticbuilldersllc.com"
       # Email — fill in with your real SMTP provider before going live;
-      # lead notifications silently no-op
+      # lead notifications silently no-op without these.
+      - key: EMAIL_PROVIDER
+        sync: false
+      - key: EMAIL_FROM_NAME
+        value: "Galactic Builders"
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USERNAME
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: EMAIL_FROM_ADDRESS
+        sync: false
+      - key: LEAD_NOTIFICATION_EMAIL
+        sync: false

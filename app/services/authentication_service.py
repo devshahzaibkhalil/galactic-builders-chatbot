@@ -41,6 +41,16 @@ def hash_password(raw_password: str) -> str:
     return _hasher.hash(raw_password)
 
 
+def set_password(user: AdminUser, raw_password: str) -> None:
+    """Used by the 'forgot password' reset flow. Also clears any existing
+    lockout/failed-attempt state — a successful reset is a stronger proof
+    of identity than a correct password guess, so there's no reason to
+    leave the account locked out afterward."""
+    user.password_hash = hash_password(raw_password)
+    user.failed_login_count = 0
+    user.locked_until = None
+
+
 def requires_mfa(user: AdminUser) -> bool:
     """Superadmins with MFA enabled must complete a second factor at login.
     Enforcement of "superadmins must have MFA enabled" as a hard policy

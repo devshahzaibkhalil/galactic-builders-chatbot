@@ -14,6 +14,7 @@ from flask_limiter.util import get_remote_address
 limiter = Limiter(key_func=get_remote_address, default_limits=["200 per minute"])
 
 LOGIN_RATE_LIMIT = "10 per minute"
+PASSWORD_RESET_RATE_LIMIT = "5 per hour"
 CHAT_MESSAGE_RATE_LIMIT = "60 per minute"
 LEAD_SUBMISSION_RATE_LIMIT = "10 per hour"
 UPLOAD_RATE_LIMIT = "30 per hour"

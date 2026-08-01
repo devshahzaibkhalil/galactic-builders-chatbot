@@ -12,15 +12,18 @@ from __future__ import annotations
 from flask import Blueprint, current_app, jsonify, request, session
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from flask_wtf.csrf import generate_csrf
+from sqlalchemy import select
 
 from app.models.admin_user import AdminUser
-from app.security.rate_limits import LOGIN_RATE_LIMIT, limiter
+from app.security.rate_limits import LOGIN_RATE_LIMIT, PASSWORD_RESET_RATE_LIMIT, limiter
 from app.services.audit_service import record as record_audit
 from app.services.authentication_service import (
     AccountLockedError,
     InvalidCredentialsError,
+    WeakPasswordError,
     authenticate,
     requires_mfa,
+    set_password,
     verify_mfa_login_code,
 )
 from app.services.mfa_pending_service import (
@@ -29,6 +32,13 @@ from app.services.mfa_pending_service import (
     create_pending_token,
     resolve_pending_token,
 )
+from app.services.password_reset_service import (
+    ResetTokenExpiredError,
+    ResetTokenInvalidError,
+    create_reset_token,
+    verify_reset_token,
+)
+from app.services.smtp_transport import send as send_email
 
 admin_auth_bp = Blueprint("admin_auth", __name__, url_prefix="/admin")
 login_manager = LoginManager()
@@ -165,3 +175,95 @@ def logout():
 @login_required
 def me():
     return jsonify({"id": current_user.id, "username": current_user.username, "role": current_user.role})
+
+
+@admin_auth_bp.post("/forgot-password")
+@limiter.limit(PASSWORD_RESET_RATE_LIMIT)
+def forgot_password():
+    """Always returns the same generic response whether or not the email
+    matches an account — revealing which emails have accounts would let an
+    attacker enumerate your admin roster."""
+    payload = request.get_json(silent=True) or {}
+    email = (payload.get("email") or "").strip().lower()
+    generic_response = jsonify(
+        {"message": "If that email matches an account, a reset link has been sent."}
+    )
+
+    if not email:
+        return jsonify({"error": "email is required"}), 400
+
+    db_session = current_app.extensions["db_session_factory"]()
+    try:
+        user = db_session.execute(
+            select(AdminUser).where(AdminUser.email == email)
+        ).scalar_one_or_none()
+
+        if user is not None and user.is_active:
+            token = create_reset_token(user_id=user.id, secret_key=current_app.config["SECRET_KEY"])
+            reset_url = f"{request.url_root.rstrip('/')}/admin/dashboard/reset-password?token={token}"
+            send_email(
+                to=user.email,
+                subject="Reset your Galactic Builders admin password",
+                body=(
+                    f"Hi {user.username},\n\n"
+                    "A password reset was requested for your Galactic Builders admin account.\n"
+                    f"Reset it here (valid for 30 minutes): {reset_url}\n\n"
+                    "If you didn't request this, you can safely ignore this email."
+                ),
+            )
+            record_audit(
+                db_session,
+                action="auth.password_reset_requested",
+                actor_id=user.id,
+                actor_role=user.role,
+                target_type="admin_user",
+                target_id=user.id,
+            )
+            db_session.commit()
+    finally:
+        db_session.close()
+
+    return generic_response
+
+
+@admin_auth_bp.post("/reset-password")
+@limiter.limit(PASSWORD_RESET_RATE_LIMIT)
+def reset_password():
+    payload = request.get_json(silent=True) or {}
+    token = payload.get("token") or ""
+    new_password = payload.get("password") or ""
+
+    if not token or not new_password:
+        return jsonify({"error": "token and password are required"}), 400
+
+    try:
+        user_id = verify_reset_token(token, secret_key=current_app.config["SECRET_KEY"])
+    except ResetTokenExpiredError:
+        return jsonify({"error": "token_expired", "message": "This reset link has expired."}), 400
+    except ResetTokenInvalidError:
+        return jsonify({"error": "token_invalid", "message": "This reset link is invalid."}), 400
+
+    db_session = current_app.extensions["db_session_factory"]()
+    try:
+        user = db_session.get(AdminUser, user_id)
+        if user is None or not user.is_active:
+            return jsonify({"error": "token_invalid", "message": "This reset link is invalid."}), 400
+
+        try:
+            set_password(user, new_password)
+        except WeakPasswordError as exc:
+            return jsonify({"error": "weak_password", "message": str(exc)}), 400
+
+        record_audit(
+            db_session,
+            action="auth.password_reset_completed",
+            actor_id=user.id,
+            actor_role=user.role,
+            target_type="admin_user",
+            target_id=user.id,
+        )
+        db_session.commit()
+    finally:
+        db_session.close()
+
+    return jsonify({"message": "Password updated. You can now sign in."})

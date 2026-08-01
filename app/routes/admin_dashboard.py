@@ -20,6 +20,16 @@ def login_page():
     return render_template("admin/login.html")
 
 
+@admin_dashboard_bp.get("/forgot-password")
+def forgot_password_page():
+    return render_template("admin/forgot_password.html")
+
+
+@admin_dashboard_bp.get("/reset-password")
+def reset_password_page():
+    return render_template("admin/reset_password.html")
+
+
 @admin_dashboard_bp.get("/")
 @admin_dashboard_bp.get("/leads")
 @login_required

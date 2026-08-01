@@ -101,66 +101,20 @@ pip install -r requirements-dev.txt
 pytest
 ```
 
-358 tests, no external services required — everything runs against an
+327 tests, no external services required — everything runs against an
 in-memory SQLite database.
 
 ## Production
 
 ```bash
-alembic upgrade head
 gunicorn -c gunicorn.conf.py wsgi:app
 ```
 
 Set `FLASK_ENV=production` and a real Postgres `DATABASE_URL` in your
-environment first (SQLite is fine for local dev only — most PaaS hosts wipe
-local disk on every deploy, which would silently delete your database).
-`alembic upgrade head` creates the schema; it replaces the old `create_all()`
-behavior once you're off SQLite. Note: `Flask-Limiter`'s rate limits
-currently use in-memory storage, which does not work correctly across
-multiple gunicorn workers — configure a shared backend (Redis) via
-`storage_uri` in `app/security/rate_limits.py` before running with more than
-one worker.
-
-## Deploying to Render
-
-A `render.yaml` blueprint is included — it provisions a free Postgres
-database and a web service wired together, and runs migrations
-automatically on every deploy.
-
-1. Push this repo to GitHub (Render deploys from a git repo, not a zip).
-2. In Render: **New > Blueprint**, point it at the repo. It reads
-   `render.yaml` and creates the database + web service for you.
-3. Generate the four required secrets locally and paste them into the
-   web service's **Environment** tab in the Render dashboard (they're left
-   blank in `render.yaml` on purpose — real secrets shouldn't live in a
-   committed file):
-   ```bash
-   python -c "import secrets; print(secrets.token_hex(32))"   # SECRET_KEY
-   python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"   # FIELD_ENCRYPTION_KEY
-   python -c "import secrets; print(secrets.token_hex(32))"   # BLIND_INDEX_KEY
-   python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"   # BACKUP_ENCRYPTION_KEY
-   ```
-   `DATABASE_URL` is filled in automatically from the linked database —
-   `app/config.py` normalizes Render's `postgres://` scheme to
-   `postgresql://` for you.
-4. Fill in the SMTP fields too if you want lead-notification emails to
-   actually send (they no-op safely if left blank).
-5. Deploy. Render runs `pip install -r requirements.txt && alembic upgrade
-   head` as the build step, then starts gunicorn.
-6. **Create the admin account** — Render's dashboard has a **Shell** tab on
-   the web service (or use `render ssh <service-name>` via the CLI). Open it
-   and run:
-   ```bash
-   python scripts/create_superadmin.py
-   ```
-   Answer the email/username/password prompts. That account is now in
-   Postgres, so it survives future deploys. Log in at
-   `https://<your-service>.onrender.com/admin/login`.
-
-Railway works the same way in spirit (Postgres plugin + web service from
-the repo + shell/CLI to run `create_superadmin.py`), it just doesn't read
-`render.yaml` — you'd set the build/start commands and env vars directly in
-the Railway dashboard instead.
+environment first. Note: `Flask-Limiter`'s rate limits currently use in-memory
+storage, which does not work correctly across multiple gunicorn workers —
+configure a shared backend (Redis) via `storage_uri` in
+`app/security/rate_limits.py` before running with more than one worker.
 
 ## Project layout
 
