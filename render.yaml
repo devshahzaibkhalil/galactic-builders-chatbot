@@ -1,10 +1,4 @@
-databases:
-  - name: galactic-builders-db
-    plan: free
-    databaseName: galactic_builders
-    user: galactic_builders
-
-services:
+﻿services:
   - type: web
     name: galactic-builders-chatbot
     runtime: python
@@ -15,12 +9,7 @@ services:
       - key: FLASK_ENV
         value: production
       - key: DATABASE_URL
-        fromDatabase:
-          name: galactic-builders-db
-          property: connectionString
-      # Generate real values for the four secrets below locally and paste
-      # them in the Render dashboard (Environment tab) — do NOT put real
-      # secrets in this file if it's committed to a public repo.
+        sync: false
       - key: SECRET_KEY
         sync: false
       - key: FIELD_ENCRYPTION_KEY
@@ -33,8 +22,6 @@ services:
         value: "https://galacticbuilldersllc.com,https://www.galacticbuilldersllc.com"
       - key: ALLOWED_FRAME_ANCESTORS
         value: "https://galacticbuilldersllc.com,https://www.galacticbuilldersllc.com"
-      # Email — fill in with your real SMTP provider before going live;
-      # lead notifications silently no-op without these.
       - key: EMAIL_PROVIDER
         sync: false
       - key: SMTP_HOST
