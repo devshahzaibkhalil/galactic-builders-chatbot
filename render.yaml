@@ -1,4 +1,4 @@
-﻿services:
+services:
   - type: web
     name: galactic-builders-chatbot
     runtime: python
@@ -24,6 +24,8 @@
         value: "https://galacticbuilldersllc.com,https://www.galacticbuilldersllc.com"
       - key: EMAIL_PROVIDER
         sync: false
+      - key: EMAIL_FROM_NAME
+        value: "Galactic Builders"
       - key: SMTP_HOST
         sync: false
       - key: SMTP_PORT
