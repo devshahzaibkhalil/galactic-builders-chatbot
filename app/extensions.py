@@ -8,7 +8,7 @@ second, parallel ORM setup alongside it.
 """
 from __future__ import annotations
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 
@@ -16,8 +16,26 @@ class Base(DeclarativeBase):
     pass
 
 
-def build_engine(database_url: str):
-    return create_engine(database_url, future=True)
+def build_engine(database_url: str, schema: str = "public"):
+    """Build the engine. When schema is anything other than 'public' (i.e.
+    this app is sharing a Postgres database with another app), connections
+    are pinned to that schema via search_path so every table this app
+    creates or queries lives there instead of colliding with another app's
+    tables of the same name in 'public'."""
+    connect_args = {}
+    if not database_url.startswith("sqlite") and schema != "public":
+        connect_args["options"] = f"-csearch_path={schema},public"
+    return create_engine(database_url, future=True, connect_args=connect_args)
+
+
+def ensure_schema(engine, schema: str) -> None:
+    """Create the dedicated schema if it doesn't exist yet. No-op for the
+    default 'public' schema or for SQLite (which has no schema concept)."""
+    if schema == "public" or engine.url.get_backend_name() == "sqlite":
+        return
+    with engine.connect() as conn:
+        conn.execute(text(f'CREATE SCHEMA IF NOT EXISTS "{schema}"'))
+        conn.commit()
 
 
 def build_session_factory(engine) -> sessionmaker:
