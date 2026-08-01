@@ -1,0 +1,12 @@
+{
+  "primary_city": "South Bend",
+  "primary_state": "IN",
+  "approved_zip_codes": [
+    "46601", "46613", "46614", "46615", "46616", "46617", "46619",
+    "46628", "46635", "46637", "46530", "46545", "46514",
+    "46516", "46544", "46574"
+  ],
+  "approved_cities": [
+    "South Bend", "Mishawaka", "Granger", "Elkhart", "Osceola", "Niles"
+  ]
+}

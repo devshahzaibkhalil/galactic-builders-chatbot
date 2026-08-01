@@ -1,0 +1,13 @@
+Hi {{ lead.full_name }},
+
+Thank you for reaching out to Galactic Builders. This confirms your estimate request was received.
+
+Reference: {{ lead.public_reference }}
+Service: {{ lead.service_key }}
+City: {{ lead.city }}
+
+A consultant will reach you as soon as possible using your submitted contact details. This message is a confirmation of receipt only, it is not a final quotation or a confirmed appointment.
+
+If you have any questions in the meantime, just reply to this email.
+
+Galactic Builders

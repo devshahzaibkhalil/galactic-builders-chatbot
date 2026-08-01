@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in — Galactic Project Concierge</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin.css') }}">
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="login-brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 20L12 4L21 20" stroke="#f1d58b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M7 20V13H17V20" stroke="#f1d58b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="login-brand-text">
+          <div class="eyebrow">Galactic Builders</div>
+          <div class="title">Project Concierge — Admin</div>
+        </div>
+      </div>
+
+      <div id="form-error" class="form-error" hidden></div>
+
+      <form id="login-form">
+        <div class="field">
+          <label for="username">Username or email</label>
+          <input type="text" id="username" name="username" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn-primary" id="submit-btn">Sign in</button>
+      </form>
+
+      <form id="mfa-form" hidden>
+        <div class="field">
+          <label for="mfa-code">Authenticator code</label>
+          <input type="text" id="mfa-code" name="code" inputmode="numeric" autocomplete="one-time-code" placeholder="6-digit code" required>
+        </div>
+        <button type="submit" class="btn-primary" id="mfa-submit-btn">Verify and sign in</button>
+      </form>
+
+      <p class="form-hint">Access restricted to authorized Galactic Builders staff.</p>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
+  <script>
+    const loginForm = document.getElementById("login-form");
+    const mfaForm = document.getElementById("mfa-form");
+    const errorBox = document.getElementById("form-error");
+    let pendingToken = null;
+
+    function showError(message) {
+      errorBox.textContent = message;
+      errorBox.hidden = false;
+    }
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBox.hidden = true;
+      const submitBtn = document.getElementById("submit-btn");
+      submitBtn.disabled = true;
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      try {
+        const result = await AdminAPI.post("/admin/login", { username, password });
+
+        if (result.mfa_required) {
+          pendingToken = result.mfa_pending_token;
+          loginForm.hidden = true;
+          mfaForm.hidden = false;
+          document.getElementById("mfa-code").focus();
+          return;
+        }
+
+        window.location.href = "/admin/dashboard/leads";
+      } catch (err) {
+        if (err.status === 423) {
+          showError("This account is temporarily locked due to repeated failed sign-in attempts.");
+        } else {
+          showError("Incorrect username or password.");
+        }
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    mfaForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBox.hidden = true;
+      const submitBtn = document.getElementById("mfa-submit-btn");
+      submitBtn.disabled = true;
+
+      const code = document.getElementById("mfa-code").value.trim();
+
+      try {
+        await AdminAPI.post("/admin/login/mfa", { mfa_pending_token: pendingToken, code });
+        window.location.href = "/admin/dashboard/leads";
+      } catch (err) {
+        showError("That code wasn't accepted. Please try again.");
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

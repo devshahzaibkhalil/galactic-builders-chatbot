@@ -1,0 +1,83 @@
+{% extends "admin/base.html" %}
+{% block title %}Leads{% endblock %}
+{% block content %}
+  <div class="page-header">
+    <div>
+      <h1>Leads</h1>
+      <div class="subtitle">Incoming project requests, sorted by most recent.</div>
+    </div>
+  </div>
+
+  <div id="leads-container">
+    <div class="loading-row">Loading leads…</div>
+  </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  function ticketTemplate(lead) {
+    const contactBits = [lead.city, lead.email, lead.phone].filter(Boolean).join(" · ");
+    const conversationLink = lead.conversation_id
+      ? `<a class="btn-small" href="/admin/dashboard/conversations/${encodeURIComponent(lead.conversation_id)}">View conversation</a>`
+      : "";
+    const assignBtn = lead.assigned_admin_id
+      ? `<span class="btn-small" aria-disabled="true">Assigned</span>`
+      : `<button class="btn-small primary" data-action="assign" data-lead-id="${lead.id}">Assign to me</button>`;
+
+    return `
+      <div class="ticket" data-priority="${escapeHtml(lead.priority_label)}">
+        <div class="ticket-ref">${escapeHtml(lead.public_reference)}<br>${formatDate(lead.created_at)}</div>
+        <div class="ticket-main">
+          <div class="service">${escapeHtml(formatServiceName(lead.service_key))} — ${escapeHtml(lead.full_name || "Unnamed")}</div>
+          <div class="meta">${escapeHtml(contactBits || "No contact details yet")}</div>
+        </div>
+        <div class="ticket-actions">
+          <span class="readiness">${lead.readiness_percent}% ready</span>
+          <span class="pill" data-priority="${escapeHtml(lead.priority_label)}">${escapeHtml(lead.priority_label)}</span>
+          ${conversationLink}
+          ${assignBtn}
+        </div>
+      </div>
+    `;
+  }
+
+  async function loadLeads() {
+    const container = document.getElementById("leads-container");
+    try {
+      const data = await AdminAPI.get("/admin/leads");
+      if (!data.leads.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <strong>No leads yet</strong>
+            New project requests from the chatbot will appear here.
+          </div>`;
+        return;
+      }
+      container.innerHTML = `<div class="ticket-list">${data.leads.map(ticketTemplate).join("")}</div>`;
+    } catch (err) {
+      if (err.status === 403) {
+        container.innerHTML = `<div class="empty-state"><strong>Access restricted</strong>Your role does not have permission to view all leads.</div>`;
+        return;
+      }
+      container.innerHTML = `<div class="empty-state"><strong>Could not load leads</strong>${escapeHtml(err.message)}</div>`;
+    }
+  }
+
+  document.addEventListener("click", async (e) => {
+    const btn = e.target.closest("[data-action='assign']");
+    if (!btn) return;
+    btn.disabled = true;
+    try {
+      const me = await AdminAPI.get("/admin/me");
+      await AdminAPI.post(`/admin/leads/${encodeURIComponent(btn.dataset.leadId)}/assign`, { admin_id: me.id });
+      showToast("Lead assigned to you.");
+      loadLeads();
+    } catch (err) {
+      showToast(err.message, { tone: "error" });
+      btn.disabled = false;
+    }
+  });
+
+  loadLeads();
+</script>
+{% endblock %}

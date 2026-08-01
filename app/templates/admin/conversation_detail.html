@@ -1,0 +1,128 @@
+{% extends "admin/base.html" %}
+{% block title %}Conversation{% endblock %}
+{% block content %}
+  <div class="page-header">
+    <div>
+      <h1>Conversation</h1>
+      <div class="subtitle" id="conv-subtitle">{{ conversation_id }}</div>
+    </div>
+    <span class="status-badge" id="status-badge" data-mode="bot_active">
+      <span class="status-dot"></span>
+      <span id="status-label">Loading…</span>
+    </span>
+  </div>
+
+  <div class="conv-layout">
+    <div class="transcript-panel" id="transcript"></div>
+
+    <div class="side-panel">
+      <div class="info-card">
+        <h3>Controls</h3>
+        <button class="btn-small primary" id="takeover-btn" style="width:100%; margin-bottom:8px;">Take over conversation</button>
+        <button class="btn-small" id="return-btn" style="width:100%;" hidden>Return to bot</button>
+
+        <div class="reply-box" id="reply-box" hidden>
+          <textarea id="reply-text" placeholder="Reply to the customer…"></textarea>
+        </div>
+        <button class="btn-small primary" id="send-btn" style="width:100%; margin-top:8px;" hidden>Send</button>
+      </div>
+
+      <div class="info-card">
+        <h3>Project details</h3>
+        <div id="fields-list"></div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  const conversationId = {{ conversation_id | tojson }};
+  const transcriptEl = document.getElementById("transcript");
+  const statusBadge = document.getElementById("status-badge");
+  const statusLabel = document.getElementById("status-label");
+  const takeoverBtn = document.getElementById("takeover-btn");
+  const returnBtn = document.getElementById("return-btn");
+  const replyBox = document.getElementById("reply-box");
+  const sendBtn = document.getElementById("send-btn");
+  const fieldsList = document.getElementById("fields-list");
+
+  function renderMessage(m) {
+    return `
+      <div class="msg" data-sender="${escapeHtml(m.sender_type)}">
+        <span class="sender-label">${escapeHtml(m.sender_type)}</span>
+        ${escapeHtml(m.content)}
+      </div>`;
+  }
+
+  function renderState(state) {
+    statusBadge.dataset.mode = state.mode;
+    statusLabel.textContent = state.human_takeover_active ? "You are handling this chat" : "Bot active";
+    takeoverBtn.hidden = state.human_takeover_active;
+    returnBtn.hidden = !state.human_takeover_active;
+    replyBox.hidden = !state.human_takeover_active;
+    sendBtn.hidden = !state.human_takeover_active;
+
+    const entries = Object.entries(state.completed_fields || {});
+    fieldsList.innerHTML = entries.length
+      ? entries.map(([k, v]) => `<div class="info-row"><span class="label">${escapeHtml(k)}</span><span>${escapeHtml(v)}</span></div>`).join("")
+      : `<div class="info-row"><span class="label">No details captured yet</span></div>`;
+  }
+
+  async function loadConversation() {
+    try {
+      const state = await AdminAPI.get(`/admin/conversations/${encodeURIComponent(conversationId)}`);
+      transcriptEl.innerHTML = state.transcript.map(renderMessage).join("") || `<div class="loading-row">No messages yet.</div>`;
+      transcriptEl.scrollTop = transcriptEl.scrollHeight;
+      renderState(state);
+    } catch (err) {
+      transcriptEl.innerHTML = `<div class="loading-row">${escapeHtml(err.message)}</div>`;
+    }
+  }
+
+  takeoverBtn.addEventListener("click", async () => {
+    takeoverBtn.disabled = true;
+    try {
+      await AdminAPI.post(`/admin/conversations/${encodeURIComponent(conversationId)}/takeover`);
+      showToast("You're now handling this conversation.");
+      loadConversation();
+    } catch (err) {
+      showToast(err.message, { tone: "error" });
+    } finally {
+      takeoverBtn.disabled = false;
+    }
+  });
+
+  returnBtn.addEventListener("click", async () => {
+    returnBtn.disabled = true;
+    try {
+      await AdminAPI.post(`/admin/conversations/${encodeURIComponent(conversationId)}/return-to-bot`);
+      showToast("Returned to the bot.");
+      loadConversation();
+    } catch (err) {
+      showToast(err.message, { tone: "error" });
+    } finally {
+      returnBtn.disabled = false;
+    }
+  });
+
+  sendBtn.addEventListener("click", async () => {
+    const textarea = document.getElementById("reply-text");
+    const message = textarea.value.trim();
+    if (!message) return;
+    sendBtn.disabled = true;
+    try {
+      await AdminAPI.post(`/admin/conversations/${encodeURIComponent(conversationId)}/messages`, { message });
+      textarea.value = "";
+      loadConversation();
+    } catch (err) {
+      showToast(err.message, { tone: "error" });
+    } finally {
+      sendBtn.disabled = false;
+    }
+  });
+
+  loadConversation();
+  setInterval(loadConversation, 8000);
+</script>
+{% endblock %}

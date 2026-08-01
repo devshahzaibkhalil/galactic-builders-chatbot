@@ -1,0 +1,26 @@
+New estimate request received via Galactic Project Concierge.
+
+Reference: {{ lead.public_reference }}
+Submitted: {{ lead.created_at }}
+
+Customer: {{ lead.full_name }}
+Phone: {{ lead.phone }}
+Email: {{ lead.email }}
+Preferred contact method: {{ lead.preferred_contact_method }}
+Best contact time: {{ lead.best_contact_time }}
+
+Service: {{ lead.service_key }}
+Project description: {{ lead.project_description }}
+Property type: {{ lead.property_type }}
+City: {{ lead.city }}
+State: {{ lead.state }}
+ZIP code: {{ lead.zip_code }}
+Project stage: {{ lead.project_stage }}
+
+Safety flag: {{ lead.safety_flag }}
+Service area status: {{ lead.service_area_status }}
+Uploaded files: {{ lead.photo_count }}
+Source page: {{ lead.source_page }}
+
+View this lead in the admin dashboard (login required):
+{{ dashboard_url }}

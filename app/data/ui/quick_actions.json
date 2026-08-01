@@ -1,0 +1,31 @@
+{
+  "interest_confirmation": {
+    "message": "Kindly confirm your interest in moving forward with this opportunity.",
+    "type": "single_select",
+    "required": true,
+    "free_text_allowed": false,
+    "options": [
+      {
+        "label": "Yes",
+        "value": "yes",
+        "icon": "circle-check"
+      },
+      {
+        "label": "No",
+        "value": "no",
+        "icon": "circle-x"
+      }
+    ]
+  },
+  "interest_confirmation_no_followup": {
+    "message": "No problem. Your request has not been submitted as a confirmed project opportunity.\n\nYou may edit your project details, ask another question, save your progress securely, or end the conversation.",
+    "type": "single_select",
+    "required": true,
+    "options": [
+      { "label": "Edit Project Details", "value": "edit_project_details", "icon": "clipboard-list" },
+      { "label": "Ask Another Question", "value": "ask_another_question", "icon": "message-circle-question" },
+      { "label": "Save and Continue Later", "value": "save_and_continue_later", "icon": "bookmark-check" },
+      { "label": "End Conversation", "value": "end_conversation", "icon": "circle-x" }
+    ]
+  }
+}

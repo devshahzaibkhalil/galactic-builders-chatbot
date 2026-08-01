@@ -1,0 +1,104 @@
+{% extends "admin/base.html" %}
+{% block title %}Appearance{% endblock %}
+{% block content %}
+  <div class="page-header">
+    <div>
+      <h1>Appearance</h1>
+      <div class="subtitle">Customize the dashboard's colors. Changes apply for everyone.</div>
+    </div>
+  </div>
+
+  <div class="info-card" style="max-width: 420px;">
+    <h3>Dashboard colors</h3>
+
+    <div class="field">
+      <label for="primary-color">Primary (sidebar, headings)</label>
+      <div class="color-row">
+        <input type="color" id="primary-color-picker" value="#0d2238">
+        <input type="text" id="primary-color" value="#0d2238" maxlength="7">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="accent-color">Accent (buttons, highlights)</label>
+      <div class="color-row">
+        <input type="color" id="accent-color-picker" value="#d2a33b">
+        <input type="text" id="accent-color" value="#d2a33b" maxlength="7">
+      </div>
+    </div>
+
+    <button class="btn-primary" id="save-theme-btn" style="margin-bottom: 8px;">Save changes</button>
+    <button class="btn-small" id="reset-theme-btn" style="width:100%;">Reset to default</button>
+  </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  const primaryPicker = document.getElementById("primary-color-picker");
+  const primaryText = document.getElementById("primary-color");
+  const accentPicker = document.getElementById("accent-color-picker");
+  const accentText = document.getElementById("accent-color");
+
+  function syncPickerAndText(picker, text) {
+    picker.addEventListener("input", () => { text.value = picker.value; });
+    text.addEventListener("input", () => {
+      if (/^#[0-9a-fA-F]{6}$/.test(text.value)) picker.value = text.value;
+    });
+  }
+  syncPickerAndText(primaryPicker, primaryText);
+  syncPickerAndText(accentPicker, accentText);
+
+  async function loadCurrentTheme() {
+    try {
+      const theme = await AdminAPI.get("/admin/settings");
+      primaryPicker.value = theme.primary_color;
+      primaryText.value = theme.primary_color;
+      accentPicker.value = theme.accent_color;
+      accentText.value = theme.accent_color;
+    } catch (err) {
+      showToast("Could not load current theme.", { tone: "error" });
+    }
+  }
+
+  async function saveTheme() {
+    const csrfRes = await fetch("/admin/csrf-token", { credentials: "same-origin" });
+    const { csrf_token } = await csrfRes.json();
+
+    const res = await fetch("/admin/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", "X-CSRFToken": csrf_token },
+      credentials: "same-origin",
+      body: JSON.stringify({ primary_color: primaryText.value, accent_color: accentText.value }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || data.error || "Could not save theme.");
+    return data;
+  }
+
+  document.getElementById("save-theme-btn").addEventListener("click", async () => {
+    try {
+      const theme = await saveTheme();
+      applyTheme(theme.primary_color, theme.accent_color);
+      showToast("Theme saved.");
+    } catch (err) {
+      showToast(err.message, { tone: "error" });
+    }
+  });
+
+  document.getElementById("reset-theme-btn").addEventListener("click", async () => {
+    try {
+      const theme = await AdminAPI.post("/admin/settings/reset");
+      primaryPicker.value = theme.primary_color;
+      primaryText.value = theme.primary_color;
+      accentPicker.value = theme.accent_color;
+      accentText.value = theme.accent_color;
+      applyTheme(theme.primary_color, theme.accent_color);
+      showToast("Theme reset to default.");
+    } catch (err) {
+      showToast(err.message, { tone: "error" });
+    }
+  });
+
+  loadCurrentTheme();
+</script>
+{% endblock %}

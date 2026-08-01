@@ -1,0 +1,18 @@
+GALACTIC BUILDERS CHATBOT - WINDOWS / VS CODE SETUP
+
+1. Extract the ZIP.
+2. Open the galactic-builders-chatbot folder in VS Code.
+3. Open Terminal > New Terminal.
+4. Run these commands one at a time:
+
+   py -m venv venv
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   .\venv\Scripts\Activate.ps1
+   python -m pip install -r requirements.txt
+   python run.py
+
+5. Open this address in your browser:
+
+   http://127.0.0.1:5000
+
+Keep the VS Code terminal open while using the chatbot.

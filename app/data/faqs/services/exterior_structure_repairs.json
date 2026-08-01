@@ -1,0 +1,208 @@
+{
+  "service_key": "exterior_structure_repairs",
+  "display_name": "Exterior Structure Repairs",
+  "category": "exterior_construction",
+  "enabled": true,
+  "aliases": [
+    "fix siding",
+    "repair fence",
+    "fix exterior trim",
+    "porch repair",
+    "exterior structure damage"
+  ],
+  "summary": "Galactic Builders can review exterior structure repairs including siding, trim, fencing, and porch components.",
+  "restricted_claims": [
+    "Do not display fixed prices or numeric price ranges; direct the customer to Request an Estimate.",
+    "Do not guarantee a completion date.",
+    "Do not confirm material availability.",
+    "Do not confirm structural or permit requirements without project review."
+  ],
+  "faqs": [
+    {
+      "id": "exterior-structure-repairs-001",
+      "question": "Do you provide exterior structure repairs services?",
+      "answer": "Yes. Galactic Builders accepts exterior structure repairs requests involving repairing damaged siding, trim, fencing, railings, porches, or other exterior structural elements. The team must review your required work before confirming the scope.",
+      "keywords": [
+        "exterior structure repairs",
+        "fix siding",
+        "repair fence"
+      ],
+      "intent": "service_availability",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "exterior-structure-repairs-002",
+      "question": "What does exterior structure repairs typically include?",
+      "answer": "Exterior Structure Repairs requests can include repairing damaged siding, trim, fencing, railings, porches, or other exterior structural elements. Please describe what you would like done so the team can confirm the scope.",
+      "keywords": [
+        "project scope",
+        "exterior structure repairs"
+      ],
+      "intent": "project_scope",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "exterior-structure-repairs-003",
+      "question": "Do you handle both installation and repair for exterior structure repairs?",
+      "answer": "Repairs can include patching or replacing damaged sections and reinforcing weakened structural components.",
+      "keywords": [
+        "installation",
+        "repair",
+        "exterior structure repairs"
+      ],
+      "intent": "installation_or_repair",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "exterior-structure-repairs-004",
+      "question": "How much does exterior structure repairs cost?",
+      "answer": "Galactic Builders does not display fixed service prices because every project depends on its scope, location, access, materials, condition, and required work. Select Request an Estimate, choose the service, and submit your contact and project details. Our consultant will reach you as soon as possible.",
+      "keywords": [
+        "cost",
+        "price",
+        "estimate",
+        "exterior structure repairs"
+      ],
+      "intent": "pricing",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "exterior-structure-repairs-005",
+      "question": "How long does exterior structure repairs take?",
+      "answer": "The schedule depends on project scope, material availability, permits, existing conditions, and required trades. The team can discuss an estimated schedule after reviewing the project.",
+      "keywords": [
+        "timeline",
+        "how long",
+        "exterior structure repairs"
+      ],
+      "intent": "timeline",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "exterior-structure-repairs-006",
+      "question": "What materials are used for exterior structure repairs?",
+      "answer": "Repair materials are matched to the existing structure where possible, such as siding type or fencing material.",
+      "keywords": [
+        "materials",
+        "exterior structure repairs"
+      ],
+      "intent": "materials",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "exterior-structure-repairs-007",
+      "question": "Can I supply my own materials or fixtures?",
+      "answer": "If you have leftover matching material from the original installation, let the team know.",
+      "keywords": [
+        "customer supplied materials",
+        "own materials"
+      ],
+      "intent": "customer_supplied_materials",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "exterior-structure-repairs-008",
+      "question": "What should the team know about the current condition of the space?",
+      "answer": "The team will need to review the extent of the damage and its likely cause, such as storm damage, age, or moisture.",
+      "keywords": [
+        "property condition",
+        "current condition"
+      ],
+      "intent": "property_condition",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "exterior-structure-repairs-009",
+      "question": "What type of exterior structure is affected, and what caused the damage?",
+      "answer": "Please describe the affected structure, such as siding, fencing, or a porch, and the likely cause of damage if known.",
+      "keywords": [
+        "siding repair",
+        "fence repair",
+        "porch repair",
+        "storm damage exterior"
+      ],
+      "intent": "project_scope",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "exterior-structure-repairs-010",
+      "question": "Can I upload photos of the project area?",
+      "answer": "Yes. You may securely upload photos of the current space, any damage, measurements, or design inspiration to help the team understand your request.",
+      "keywords": [
+        "upload photos",
+        "send pictures",
+        "project photos"
+      ],
+      "intent": "photo_upload",
+      "follow_up_action": "start_photo_upload_flow"
+    },
+    {
+      "id": "exterior-structure-repairs-011",
+      "question": "Do you service my area?",
+      "answer": "Galactic Builders serves South Bend, Indiana and nearby areas. Share your city and ZIP code and the team will confirm whether your location is within the service area.",
+      "keywords": [
+        "service area",
+        "do you service my area",
+        "zip code"
+      ],
+      "intent": "service_area",
+      "follow_up_action": "start_service_area_check"
+    },
+    {
+      "id": "exterior-structure-repairs-012",
+      "question": "Can I request a callback or consultation?",
+      "answer": "Yes. You can request a callback or book a consultation, and a team member will follow up using your preferred contact method and time.",
+      "keywords": [
+        "callback",
+        "consultation",
+        "schedule a call"
+      ],
+      "intent": "appointment_or_callback",
+      "follow_up_action": "offer_callback_flow"
+    },
+    {
+      "id": "exterior-structure-repairs-013",
+      "question": "Are there any safety concerns I should mention?",
+      "answer": "If there is an active safety issue such as gas odor, electrical sparking, active flooding, or a structural concern, let the team know immediately so it can be flagged appropriately.",
+      "keywords": [
+        "safety",
+        "emergency",
+        "urgent"
+      ],
+      "intent": "safety",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "exterior-structure-repairs-014",
+      "question": "Is Galactic Builders licensed and insured for this work?",
+      "answer": "Licensing and insurance details are confirmed by the Galactic Builders team directly and are not guaranteed through this chat. Ask the team for current licensing and insurance documentation.",
+      "keywords": [
+        "licensed",
+        "insured",
+        "warranty"
+      ],
+      "intent": "licensing_warranty",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "exterior-structure-repairs-015",
+      "question": "What is the next step to move forward?",
+      "answer": "The next step is to start an estimate request for exterior structure repairs so the team can review your project details and follow up.",
+      "keywords": [
+        "next step",
+        "get an estimate",
+        "request estimate"
+      ],
+      "intent": "next_step",
+      "follow_up_action": "offer_estimate_flow"
+    }
+  ],
+  "lead_questions": [
+    "Are you planning a full project or selected updates?",
+    "Which part of the exterior structure repairs project is most important to you?",
+    "What type of exterior structure is affected, and what caused the damage?",
+    "Have you already selected or purchased materials?",
+    "What is your preferred project timeline?",
+    "What is your approximate budget range?"
+  ]
+}

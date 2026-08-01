@@ -1,0 +1,131 @@
+{
+  "version": "1.0",
+  "services": {
+    "kitchen_remodeling": {
+      "display_name": "Kitchen Remodeling",
+      "category": "interior_remodeling",
+      "file": "kitchen_remodeling.json",
+      "enabled": true
+    },
+    "bathroom_remodeling": {
+      "display_name": "Bathroom Remodeling",
+      "category": "interior_remodeling",
+      "file": "bathroom_remodeling.json",
+      "enabled": true
+    },
+    "basement_remodeling": {
+      "display_name": "Basement Remodeling",
+      "category": "interior_remodeling",
+      "file": "basement_remodeling.json",
+      "enabled": true
+    },
+    "home_addition_construction": {
+      "display_name": "Home Addition Construction",
+      "category": "interior_remodeling",
+      "file": "home_addition_construction.json",
+      "enabled": true
+    },
+    "flooring_installation": {
+      "display_name": "Flooring Installation",
+      "category": "interior_remodeling",
+      "file": "flooring_installation.json",
+      "enabled": true
+    },
+    "flooring_repair": {
+      "display_name": "Flooring Repair",
+      "category": "interior_remodeling",
+      "file": "flooring_repair.json",
+      "enabled": true
+    },
+    "drywall_installation": {
+      "display_name": "Drywall Installation",
+      "category": "interior_remodeling",
+      "file": "drywall_installation.json",
+      "enabled": true
+    },
+    "interior_painting": {
+      "display_name": "Interior Painting",
+      "category": "interior_remodeling",
+      "file": "interior_painting.json",
+      "enabled": true
+    },
+    "deck_construction": {
+      "display_name": "Deck Construction",
+      "category": "exterior_construction",
+      "file": "deck_construction.json",
+      "enabled": true
+    },
+    "patio_construction": {
+      "display_name": "Patio Construction",
+      "category": "exterior_construction",
+      "file": "patio_construction.json",
+      "enabled": true
+    },
+    "exterior_painting": {
+      "display_name": "Exterior Painting",
+      "category": "exterior_construction",
+      "file": "exterior_painting.json",
+      "enabled": true
+    },
+    "exterior_structure_repairs": {
+      "display_name": "Exterior Structure Repairs",
+      "category": "exterior_construction",
+      "file": "exterior_structure_repairs.json",
+      "enabled": true
+    },
+    "roof_installation": {
+      "display_name": "Roof Installation",
+      "category": "exterior_construction",
+      "file": "roof_installation.json",
+      "enabled": true
+    },
+    "roof_repair": {
+      "display_name": "Roof Repair",
+      "category": "exterior_construction",
+      "file": "roof_repair.json",
+      "enabled": true
+    },
+    "gutter_cleaning": {
+      "display_name": "Gutter Cleaning",
+      "category": "exterior_construction",
+      "file": "gutter_cleaning.json",
+      "enabled": true
+    },
+    "fan_installation": {
+      "display_name": "Fan Installation",
+      "category": "installation_and_repair",
+      "file": "fan_installation.json",
+      "enabled": true
+    },
+    "fan_repair": {
+      "display_name": "Fan Repair",
+      "category": "installation_and_repair",
+      "file": "fan_repair.json",
+      "enabled": true
+    },
+    "tv_mounting": {
+      "display_name": "TV Mounting",
+      "category": "installation_and_repair",
+      "file": "tv_mounting.json",
+      "enabled": true
+    },
+    "furniture_assembly": {
+      "display_name": "Furniture Assembly",
+      "category": "installation_and_repair",
+      "file": "furniture_assembly.json",
+      "enabled": true
+    },
+    "plumbing_fixture_installation": {
+      "display_name": "Plumbing Fixture Installation",
+      "category": "installation_and_repair",
+      "file": "plumbing_fixture_installation.json",
+      "enabled": true
+    },
+    "water_fixture_repair": {
+      "display_name": "Water Fixture Repair",
+      "category": "installation_and_repair",
+      "file": "water_fixture_repair.json",
+      "enabled": true
+    }
+  }
+}

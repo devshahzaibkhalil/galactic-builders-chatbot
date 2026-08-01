@@ -1,0 +1,208 @@
+{
+  "service_key": "tv_mounting",
+  "display_name": "TV Mounting",
+  "category": "installation_and_repair",
+  "enabled": true,
+  "aliases": [
+    "mount my tv",
+    "tv wall mount",
+    "hang tv on wall",
+    "tv installation",
+    "conceal tv wires"
+  ],
+  "summary": "Galactic Builders can review TV mounting requests including wall type, bracket needs, and wire concealment.",
+  "restricted_claims": [
+    "Do not display fixed prices or numeric price ranges; direct the customer to Request an Estimate.",
+    "Do not guarantee a completion date.",
+    "Do not confirm material availability.",
+    "Do not confirm structural or permit requirements without project review."
+  ],
+  "faqs": [
+    {
+      "id": "tv-mounting-001",
+      "question": "Do you provide tv mounting services?",
+      "answer": "Yes. Galactic Builders accepts tv mounting requests involving mounting a television on a wall, including bracket installation and optional wire concealment. The team must review your required work before confirming the scope.",
+      "keywords": [
+        "tv mounting",
+        "mount my tv",
+        "tv wall mount"
+      ],
+      "intent": "service_availability",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "tv-mounting-002",
+      "question": "What does tv mounting typically include?",
+      "answer": "TV Mounting requests can include mounting a television on a wall, including bracket installation and optional wire concealment. Please describe what you would like done so the team can confirm the scope.",
+      "keywords": [
+        "project scope",
+        "tv mounting"
+      ],
+      "intent": "project_scope",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "tv-mounting-003",
+      "question": "Do you handle both installation and repair for tv mounting?",
+      "answer": "TV mounting includes securing a wall bracket to the appropriate wall structure and attaching the television.",
+      "keywords": [
+        "installation",
+        "repair",
+        "tv mounting"
+      ],
+      "intent": "installation_or_repair",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "tv-mounting-004",
+      "question": "How much does tv mounting cost?",
+      "answer": "Galactic Builders does not display fixed service prices because every project depends on its scope, location, access, materials, condition, and required work. Select Request an Estimate, choose the service, and submit your contact and project details. Our consultant will reach you as soon as possible.",
+      "keywords": [
+        "cost",
+        "price",
+        "estimate",
+        "tv mounting"
+      ],
+      "intent": "pricing",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "tv-mounting-005",
+      "question": "How long does tv mounting take?",
+      "answer": "The schedule depends on project scope, material availability, permits, existing conditions, and required trades. The team can discuss an estimated schedule after reviewing the project.",
+      "keywords": [
+        "timeline",
+        "how long",
+        "tv mounting"
+      ],
+      "intent": "timeline",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "tv-mounting-006",
+      "question": "What materials are used for tv mounting?",
+      "answer": "A wall mount bracket is typically required; the team can advise on suitable bracket types.",
+      "keywords": [
+        "materials",
+        "tv mounting"
+      ],
+      "intent": "materials",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "tv-mounting-007",
+      "question": "Can I supply my own materials or fixtures?",
+      "answer": "Let the team know if you have already purchased a mounting bracket and the television size.",
+      "keywords": [
+        "customer supplied materials",
+        "own materials"
+      ],
+      "intent": "customer_supplied_materials",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "tv-mounting-008",
+      "question": "What should the team know about the current condition of the space?",
+      "answer": "The team will need the television size, the wall type such as drywall, brick, or masonry, and the desired mounting location.",
+      "keywords": [
+        "property condition",
+        "current condition"
+      ],
+      "intent": "property_condition",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "tv-mounting-009",
+      "question": "What is the television size, the wall type, and do you want the wires concealed?",
+      "answer": "TV size and wall type such as drywall, brick, or masonry affect the bracket and mounting method. Let the team know if in-wall wire concealment is wanted.",
+      "keywords": [
+        "tv size",
+        "wall type mounting",
+        "conceal wires",
+        "tv bracket"
+      ],
+      "intent": "project_scope",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "tv-mounting-010",
+      "question": "Can I upload photos of the project area?",
+      "answer": "Yes. You may securely upload photos of the current space, any damage, measurements, or design inspiration to help the team understand your request.",
+      "keywords": [
+        "upload photos",
+        "send pictures",
+        "project photos"
+      ],
+      "intent": "photo_upload",
+      "follow_up_action": "start_photo_upload_flow"
+    },
+    {
+      "id": "tv-mounting-011",
+      "question": "Do you service my area?",
+      "answer": "Galactic Builders serves South Bend, Indiana and nearby areas. Share your city and ZIP code and the team will confirm whether your location is within the service area.",
+      "keywords": [
+        "service area",
+        "do you service my area",
+        "zip code"
+      ],
+      "intent": "service_area",
+      "follow_up_action": "start_service_area_check"
+    },
+    {
+      "id": "tv-mounting-012",
+      "question": "Can I request a callback or consultation?",
+      "answer": "Yes. You can request a callback or book a consultation, and a team member will follow up using your preferred contact method and time.",
+      "keywords": [
+        "callback",
+        "consultation",
+        "schedule a call"
+      ],
+      "intent": "appointment_or_callback",
+      "follow_up_action": "offer_callback_flow"
+    },
+    {
+      "id": "tv-mounting-013",
+      "question": "Are there any safety concerns I should mention?",
+      "answer": "If there is an active safety issue such as gas odor, electrical sparking, active flooding, or a structural concern, let the team know immediately so it can be flagged appropriately.",
+      "keywords": [
+        "safety",
+        "emergency",
+        "urgent"
+      ],
+      "intent": "safety",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "tv-mounting-014",
+      "question": "Is Galactic Builders licensed and insured for this work?",
+      "answer": "Licensing and insurance details are confirmed by the Galactic Builders team directly and are not guaranteed through this chat. Ask the team for current licensing and insurance documentation.",
+      "keywords": [
+        "licensed",
+        "insured",
+        "warranty"
+      ],
+      "intent": "licensing_warranty",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "tv-mounting-015",
+      "question": "What is the next step to move forward?",
+      "answer": "The next step is to start an estimate request for tv mounting so the team can review your project details and follow up.",
+      "keywords": [
+        "next step",
+        "get an estimate",
+        "request estimate"
+      ],
+      "intent": "next_step",
+      "follow_up_action": "offer_estimate_flow"
+    }
+  ],
+  "lead_questions": [
+    "Are you planning a full project or selected updates?",
+    "Which part of the tv mounting project is most important to you?",
+    "What is the television size, the wall type, and do you want the wires concealed?",
+    "Have you already selected or purchased materials?",
+    "What is your preferred project timeline?",
+    "What is your approximate budget range?"
+  ]
+}

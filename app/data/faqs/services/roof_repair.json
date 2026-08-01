@@ -1,0 +1,207 @@
+{
+  "service_key": "roof_repair",
+  "display_name": "Roof Repair",
+  "category": "exterior_construction",
+  "enabled": true,
+  "aliases": [
+    "fix my roof",
+    "roof leak repair",
+    "storm damage roof",
+    "missing shingles",
+    "roof patch"
+  ],
+  "summary": "Galactic Builders can review roof repair requests including leaks, storm damage, and localized shingle repair.",
+  "restricted_claims": [
+    "Do not display fixed prices or numeric price ranges; direct the customer to Request an Estimate.",
+    "Do not guarantee a completion date.",
+    "Do not confirm material availability.",
+    "Do not confirm structural or permit requirements without project review."
+  ],
+  "faqs": [
+    {
+      "id": "roof-repair-001",
+      "question": "Do you provide roof repair services?",
+      "answer": "Yes. Galactic Builders accepts roof repair requests involving repairing leaks, storm damage, missing or damaged shingles, and localized roofing issues. The team must review your required work before confirming the scope.",
+      "keywords": [
+        "roof repair",
+        "fix my roof",
+        "roof leak repair"
+      ],
+      "intent": "service_availability",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "roof-repair-002",
+      "question": "What does roof repair typically include?",
+      "answer": "Roof Repair requests can include repairing leaks, storm damage, missing or damaged shingles, and localized roofing issues. Please describe what you would like done so the team can confirm the scope.",
+      "keywords": [
+        "project scope",
+        "roof repair"
+      ],
+      "intent": "project_scope",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "roof-repair-003",
+      "question": "Do you handle both installation and repair for roof repair?",
+      "answer": "Roof repair can include patching localized damage, replacing shingles, or addressing flashing and leak points.",
+      "keywords": [
+        "installation",
+        "repair",
+        "roof repair"
+      ],
+      "intent": "installation_or_repair",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "roof-repair-004",
+      "question": "How much does roof repair cost?",
+      "answer": "Galactic Builders does not display fixed service prices because every project depends on its scope, location, access, materials, condition, and required work. Select Request an Estimate, choose the service, and submit your contact and project details. Our consultant will reach you as soon as possible.",
+      "keywords": [
+        "cost",
+        "price",
+        "estimate",
+        "roof repair"
+      ],
+      "intent": "pricing",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "roof-repair-005",
+      "question": "How long does roof repair take?",
+      "answer": "The schedule depends on project scope, material availability, permits, existing conditions, and required trades. The team can discuss an estimated schedule after reviewing the project.",
+      "keywords": [
+        "timeline",
+        "how long",
+        "roof repair"
+      ],
+      "intent": "timeline",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "roof-repair-006",
+      "question": "What materials are used for roof repair?",
+      "answer": "Repair materials are matched to the existing roofing type where possible.",
+      "keywords": [
+        "materials",
+        "roof repair"
+      ],
+      "intent": "materials",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "roof-repair-007",
+      "question": "Can I supply my own materials or fixtures?",
+      "answer": "If you know the existing shingle brand or color, let the team know so they can attempt a close match.",
+      "keywords": [
+        "customer supplied materials",
+        "own materials"
+      ],
+      "intent": "customer_supplied_materials",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "roof-repair-008",
+      "question": "What should the team know about the current condition of the space?",
+      "answer": "The team will need to know the roof age, whether there is an active leak, and any visible storm or wind damage.",
+      "keywords": [
+        "property condition",
+        "current condition"
+      ],
+      "intent": "property_condition",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "roof-repair-009",
+      "question": "Is there an active leak, and was the damage caused by a recent storm?",
+      "answer": "Active leaks and recent storm damage may need prompt review. Let the team know if water is currently entering the home.",
+      "keywords": [
+        "roof leak",
+        "storm damage roof",
+        "missing shingles"
+      ],
+      "intent": "project_scope",
+      "follow_up_action": "ask_project_details"
+    },
+    {
+      "id": "roof-repair-010",
+      "question": "Can I upload photos of the project area?",
+      "answer": "Yes. You may securely upload photos of the current space, any damage, measurements, or design inspiration to help the team understand your request.",
+      "keywords": [
+        "upload photos",
+        "send pictures",
+        "project photos"
+      ],
+      "intent": "photo_upload",
+      "follow_up_action": "start_photo_upload_flow"
+    },
+    {
+      "id": "roof-repair-011",
+      "question": "Do you service my area?",
+      "answer": "Galactic Builders serves South Bend, Indiana and nearby areas. Share your city and ZIP code and the team will confirm whether your location is within the service area.",
+      "keywords": [
+        "service area",
+        "do you service my area",
+        "zip code"
+      ],
+      "intent": "service_area",
+      "follow_up_action": "start_service_area_check"
+    },
+    {
+      "id": "roof-repair-012",
+      "question": "Can I request a callback or consultation?",
+      "answer": "Yes. You can request a callback or book a consultation, and a team member will follow up using your preferred contact method and time.",
+      "keywords": [
+        "callback",
+        "consultation",
+        "schedule a call"
+      ],
+      "intent": "appointment_or_callback",
+      "follow_up_action": "offer_callback_flow"
+    },
+    {
+      "id": "roof-repair-013",
+      "question": "Are there any safety concerns I should mention?",
+      "answer": "If there is an active safety issue such as gas odor, electrical sparking, active flooding, or a structural concern, let the team know immediately so it can be flagged appropriately.",
+      "keywords": [
+        "safety",
+        "emergency",
+        "urgent"
+      ],
+      "intent": "safety",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "roof-repair-014",
+      "question": "Is Galactic Builders licensed and insured for this work?",
+      "answer": "Licensing and insurance details are confirmed by the Galactic Builders team directly and are not guaranteed through this chat. Ask the team for current licensing and insurance documentation.",
+      "keywords": [
+        "licensed",
+        "insured",
+        "warranty"
+      ],
+      "intent": "licensing_warranty",
+      "follow_up_action": "offer_estimate_flow"
+    },
+    {
+      "id": "roof-repair-015",
+      "question": "What is the next step to move forward?",
+      "answer": "The next step is to start an estimate request for roof repair so the team can review your project details and follow up.",
+      "keywords": [
+        "next step",
+        "get an estimate",
+        "request estimate"
+      ],
+      "intent": "next_step",
+      "follow_up_action": "offer_estimate_flow"
+    }
+  ],
+  "lead_questions": [
+    "Are you planning a full project or selected updates?",
+    "Which part of the roof repair project is most important to you?",
+    "Is there an active leak, and was the damage caused by a recent storm?",
+    "Have you already selected or purchased materials?",
+    "What is your preferred project timeline?",
+    "What is your approximate budget range?"
+  ]
+}
