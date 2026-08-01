@@ -12,7 +12,7 @@ from app.config import CONFIG_BY_NAME
 from app.core.conversation_store import DbConversationStore
 from app.core.flow_manager import FlowDefinition, FlowManager, FlowStep
 from app.error_handlers import register_error_handlers
-from app.extensions import build_engine, build_session_factory, create_all
+from app.extensions import build_engine, build_session_factory, create_all, ensure_schema
 from app.logging_config import configure_logging
 from app.security.csrf import init_csrf
 from app.security.origin_policy import apply_cors_headers
@@ -60,7 +60,8 @@ def create_app(config_name: str = "development") -> Flask:
     # -- Database (plain SQLAlchemy; see app/extensions.py docstring) --
     from app import models as _models  # noqa: F401 - registers every model on Base.metadata before create_all()
 
-    engine = build_engine(app.config["DATABASE_URL"])
+    engine = build_engine(app.config["DATABASE_URL"], app.config["DB_SCHEMA"])
+    ensure_schema(engine, app.config["DB_SCHEMA"])
     app.extensions["db_engine"] = engine
     app.extensions["db_session_factory"] = build_session_factory(engine)
     if app.config["TESTING"] or app.config["DATABASE_URL"].startswith("sqlite"):
