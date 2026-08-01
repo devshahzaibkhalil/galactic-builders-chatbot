@@ -8,8 +8,19 @@ services:
     envVars:
       - key: FLASK_ENV
         value: production
+      # Paste the existing database's Internal Connection String here
+      # manually in the Render dashboard (Environment tab) — this app
+      # shares the database used by your other chatbot.
       - key: DATABASE_URL
         sync: false
+      # Isolates this app's tables from your other chatbot's tables in the
+      # same shared database. Must match on every deploy — don't change
+      # this value later without a migration plan.
+      - key: DB_SCHEMA
+        value: "galactic_builders"
+      # Generate real values for the four secrets below locally and paste
+      # them in the Render dashboard (Environment tab) — do NOT put real
+      # secrets in this file if it's committed to a public repo.
       - key: SECRET_KEY
         sync: false
       - key: FIELD_ENCRYPTION_KEY
@@ -22,19 +33,5 @@ services:
         value: "https://galacticbuilldersllc.com,https://www.galacticbuilldersllc.com"
       - key: ALLOWED_FRAME_ANCESTORS
         value: "https://galacticbuilldersllc.com,https://www.galacticbuilldersllc.com"
-      - key: EMAIL_PROVIDER
-        sync: false
-      - key: EMAIL_FROM_NAME
-        value: "Galactic Builders"
-      - key: SMTP_HOST
-        sync: false
-      - key: SMTP_PORT
-        sync: false
-      - key: SMTP_USERNAME
-        sync: false
-      - key: SMTP_PASSWORD
-        sync: false
-      - key: EMAIL_FROM_ADDRESS
-        sync: false
-      - key: LEAD_NOTIFICATION_EMAIL
-        sync: false
+      # Email — fill in with your real SMTP provider before going live;
+      # lead notifications silently no-op
