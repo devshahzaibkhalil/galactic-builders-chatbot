@@ -26,4 +26,8 @@ class DashboardSetting(Base):
     id: Mapped[str] = mapped_column(String(16), primary_key=True, default=lambda: DEFAULT_ROW_ID)
     primary_color: Mapped[str] = mapped_column(String(7), default=DEFAULT_PRIMARY_COLOR)
     accent_color: Mapped[str] = mapped_column(String(7), default=DEFAULT_ACCENT_COLOR)
+    # Overrides the LEAD_NOTIFICATION_EMAIL env var when set — lets a
+    # superadmin change where new-lead emails go without a redeploy. NULL
+    # means "fall back to the env var" (see dashboard_settings_service).
+    lead_notification_email: Mapped[str | None] = mapped_column(String(254), nullable=True)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
