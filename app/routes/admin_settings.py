@@ -4,10 +4,16 @@ from functools import wraps
 
 from flask import Blueprint, current_app, jsonify, request
 from flask_login import current_user, login_required
+from sqlalchemy.exc import IntegrityError
 
+from app.models.admin_user import AdminUser
 from app.security.permissions import PermissionDeniedError, require_permission
+from app.services import dashboard_settings_service
 from app.services.audit_service import record as record_audit
+from app.services.authentication_service import WeakPasswordError, set_password, verify_password
 from app.services.dashboard_settings_service import InvalidColorError, get_theme, reset_theme, update_theme
+from app.validators.email_validator import validate_email
+from app.validators.username_validator import validate_username
 
 admin_settings_bp = Blueprint("admin_settings", __name__, url_prefix="/admin/settings")
 
@@ -92,3 +98,161 @@ def reset_settings():
     finally:
         session.close()
     return jsonify(result)
+
+
+# ---------------------------------------------------------------------------
+# My account: every admin/agent can view and change their own email,
+# username, and password (never anyone else's - there's no "target user id"
+# here, only current_user).
+# ---------------------------------------------------------------------------
+
+@admin_settings_bp.get("/account")
+@login_required
+def get_account():
+    return jsonify({"email": current_user.email, "username": current_user.username, "role": current_user.role})
+
+
+@admin_settings_bp.put("/account")
+@login_required
+def update_account():
+    payload = request.get_json(silent=True) or {}
+    new_email = (payload.get("email") or "").strip()
+    new_username = (payload.get("username") or "").strip()
+    current_password = payload.get("current_password") or ""
+
+    if not new_email or not new_username:
+        return jsonify({"error": "email and username are required"}), 400
+    if not current_password:
+        return jsonify({"error": "current_password is required"}), 400
+
+    email_result = validate_email(new_email)
+    if not email_result["valid"]:
+        return jsonify({"error": email_result["error_code"], "message": email_result["message"]}), 422
+
+    username_result = validate_username(new_username)
+    if not username_result["valid"]:
+        return jsonify({"error": username_result["error_code"], "message": username_result["message"]}), 422
+
+    session_factory = current_app.extensions["db_session_factory"]
+    session = session_factory()
+    try:
+        user = session.get(AdminUser, current_user.id)
+        if user is None or not verify_password(user, current_password):
+            return jsonify({"error": "invalid_current_password", "message": "Current password is incorrect."}), 401
+
+        user.email = email_result["normalized_value"]
+        user.username = username_result["normalized_value"]
+
+        try:
+            session.flush()
+        except IntegrityError:
+            session.rollback()
+            return jsonify({"error": "already_in_use", "message": "That email or username is already taken."}), 409
+
+        record_audit(
+            session,
+            action="settings.account_update",
+            actor_id=user.id,
+            actor_role=user.role,
+            target_type="admin_user",
+            target_id=user.id,
+            metadata={"email": user.email, "username": user.username},
+        )
+        session.commit()
+        result = {"email": user.email, "username": user.username, "role": user.role}
+    finally:
+        session.close()
+
+    return jsonify(result)
+
+
+@admin_settings_bp.put("/password")
+@login_required
+def update_password():
+    payload = request.get_json(silent=True) or {}
+    current_password = payload.get("current_password") or ""
+    new_password = payload.get("new_password") or ""
+
+    if not current_password or not new_password:
+        return jsonify({"error": "current_password and new_password are required"}), 400
+
+    session_factory = current_app.extensions["db_session_factory"]
+    session = session_factory()
+    try:
+        user = session.get(AdminUser, current_user.id)
+        if user is None or not verify_password(user, current_password):
+            return jsonify({"error": "invalid_current_password", "message": "Current password is incorrect."}), 401
+
+        try:
+            set_password(user, new_password)
+        except WeakPasswordError as exc:
+            return jsonify({"error": "weak_password", "message": str(exc)}), 400
+
+        record_audit(
+            session,
+            action="settings.password_change",
+            actor_id=user.id,
+            actor_role=user.role,
+            target_type="admin_user",
+            target_id=user.id,
+        )
+        session.commit()
+    finally:
+        session.close()
+
+    return jsonify({"message": "Password updated."})
+
+
+# ---------------------------------------------------------------------------
+# Lead notification email: where broadcast admin notifications (new lead,
+# new conversation, appointment requested, unanswered question) get emailed.
+# Superadmin-only - same permission that already existed for this purpose.
+# ---------------------------------------------------------------------------
+
+@admin_settings_bp.get("/notifications")
+@login_required
+@_require("configure_notification_recipients")
+def get_notification_settings():
+    session_factory = current_app.extensions["db_session_factory"]
+    session = session_factory()
+    try:
+        info = dashboard_settings_service.get_lead_notification_email_source(session)
+        session.commit()
+    finally:
+        session.close()
+    return jsonify({"lead_notification_email": info["email"], "source": info["source"]})
+
+
+@admin_settings_bp.put("/notifications")
+@login_required
+@_require("configure_notification_recipients")
+def update_notification_settings():
+    payload = request.get_json(silent=True) or {}
+    # Empty string / omitted clears the override and falls back to the
+    # LEAD_NOTIFICATION_EMAIL env var again.
+    raw_email = payload.get("lead_notification_email")
+
+    session_factory = current_app.extensions["db_session_factory"]
+    session = session_factory()
+    try:
+        try:
+            setting = dashboard_settings_service.update_lead_notification_email(session, raw_email)
+        except dashboard_settings_service.InvalidNotificationEmailError as exc:
+            return jsonify({"error": "invalid_email", "message": str(exc)}), 422
+
+        record_audit(
+            session,
+            action="settings.lead_notification_email_update",
+            actor_id=current_user.id,
+            actor_role=current_user.role,
+            target_type="dashboard_setting",
+            target_id=setting.id,
+            metadata={"lead_notification_email": setting.lead_notification_email},
+        )
+        session.commit()
+        info = dashboard_settings_service.get_lead_notification_email_source(session)
+        session.commit()
+    finally:
+        session.close()
+
+    return jsonify({"lead_notification_email": info["email"], "source": info["source"]})
