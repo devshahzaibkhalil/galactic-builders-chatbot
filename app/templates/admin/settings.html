@@ -1,15 +1,71 @@
 {% extends "admin/base.html" %}
-{% block title %}Appearance{% endblock %}
+{% block title %}Settings{% endblock %}
 {% block content %}
   <div class="page-header">
     <div>
-      <h1>Appearance</h1>
-      <div class="subtitle">Customize the dashboard's colors. Changes apply for everyone.</div>
+      <h1>Settings</h1>
+      <div class="subtitle">Manage your account and the dashboard's configuration.</div>
     </div>
   </div>
 
   <div class="info-card" style="max-width: 420px;">
-    <h3>Dashboard colors</h3>
+    <h3>My account</h3>
+    <div id="account-error" class="form-error" hidden></div>
+
+    <div class="field">
+      <label for="account-email">Email</label>
+      <input type="email" id="account-email">
+    </div>
+    <div class="field">
+      <label for="account-username">Username</label>
+      <input type="text" id="account-username">
+    </div>
+    <div class="field">
+      <label for="account-current-password">Current password</label>
+      <input type="password" id="account-current-password" placeholder="Required to save changes">
+    </div>
+
+    <button class="btn-primary" id="save-account-btn">Save changes</button>
+  </div>
+
+  <div class="info-card" style="max-width: 420px;">
+    <h3>Change password</h3>
+    <div id="password-error" class="form-error" hidden></div>
+
+    <div class="field">
+      <label for="password-current">Current password</label>
+      <input type="password" id="password-current">
+    </div>
+    <div class="field">
+      <label for="password-new">New password</label>
+      <input type="password" id="password-new">
+    </div>
+    <div class="form-hint" style="margin-top:-8px; margin-bottom:16px; text-align:left;">
+      At least 12 characters, including three of: uppercase, lowercase, digit, symbol.
+    </div>
+
+    <button class="btn-primary" id="save-password-btn">Update password</button>
+  </div>
+
+  <div class="info-card" style="max-width: 420px;" id="notifications-card" hidden>
+    <h3>Lead notifications</h3>
+    <div class="subtitle" style="margin-bottom: 16px;">
+      Where new-lead, new-conversation, and appointment-request emails are sent.
+    </div>
+    <div id="notifications-error" class="form-error" hidden></div>
+
+    <div class="field">
+      <label for="notification-email">Notification email</label>
+      <input type="email" id="notification-email" placeholder="leads@yourcompany.com">
+    </div>
+    <div class="form-hint" id="notification-source-hint" style="margin-top:-8px; margin-bottom:16px; text-align:left;"></div>
+
+    <button class="btn-primary" id="save-notification-email-btn" style="margin-bottom: 8px;">Save changes</button>
+    <button class="btn-small" id="clear-notification-email-btn" style="width:100%;">Reset to default</button>
+  </div>
+
+  <div class="info-card" style="max-width: 420px;">
+    <h3>Appearance</h3>
 
     <div class="field">
       <label for="primary-color">Primary (sidebar, headings)</label>
@@ -34,6 +90,136 @@
 
 {% block extra_scripts %}
 <script>
+  async function csrfHeaders() {
+    const res = await fetch("/admin/csrf-token", { credentials: "same-origin" });
+    const { csrf_token } = await res.json();
+    return { "Content-Type": "application/json", "X-CSRFToken": csrf_token };
+  }
+
+  async function putJson(path, body) {
+    const res = await fetch(path, {
+      method: "PUT",
+      headers: await csrfHeaders(),
+      credentials: "same-origin",
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => null);
+    if (!res.ok) {
+      const err = new Error((data && (data.message || data.error)) || "Request failed.");
+      err.status = res.status;
+      throw err;
+    }
+    return data;
+  }
+
+  function showFieldError(el, message) {
+    el.textContent = message;
+    el.hidden = !message;
+  }
+
+  // ---------------- My account ----------------
+  const accountEmail = document.getElementById("account-email");
+  const accountUsername = document.getElementById("account-username");
+  const accountCurrentPassword = document.getElementById("account-current-password");
+  const accountError = document.getElementById("account-error");
+
+  async function loadAccount() {
+    try {
+      const account = await AdminAPI.get("/admin/settings/account");
+      accountEmail.value = account.email;
+      accountUsername.value = account.username;
+      return account;
+    } catch (err) {
+      showToast("Could not load your account.", { tone: "error" });
+      return null;
+    }
+  }
+
+  document.getElementById("save-account-btn").addEventListener("click", async () => {
+    showFieldError(accountError, "");
+    try {
+      const updated = await putJson("/admin/settings/account", {
+        email: accountEmail.value,
+        username: accountUsername.value,
+        current_password: accountCurrentPassword.value,
+      });
+      accountEmail.value = updated.email;
+      accountUsername.value = updated.username;
+      accountCurrentPassword.value = "";
+      showToast("Account updated.");
+    } catch (err) {
+      showFieldError(accountError, err.message);
+    }
+  });
+
+  // ---------------- Change password ----------------
+  const passwordCurrent = document.getElementById("password-current");
+  const passwordNew = document.getElementById("password-new");
+  const passwordError = document.getElementById("password-error");
+
+  document.getElementById("save-password-btn").addEventListener("click", async () => {
+    showFieldError(passwordError, "");
+    try {
+      await putJson("/admin/settings/password", {
+        current_password: passwordCurrent.value,
+        new_password: passwordNew.value,
+      });
+      passwordCurrent.value = "";
+      passwordNew.value = "";
+      showToast("Password updated.");
+    } catch (err) {
+      showFieldError(passwordError, err.message);
+    }
+  });
+
+  // ---------------- Lead notification email (superadmin only) ----------------
+  const notificationsCard = document.getElementById("notifications-card");
+  const notificationEmail = document.getElementById("notification-email");
+  const notificationSourceHint = document.getElementById("notification-source-hint");
+  const notificationsError = document.getElementById("notifications-error");
+
+  function renderNotificationSource(data) {
+    notificationEmail.value = data.lead_notification_email || "";
+    notificationSourceHint.textContent = data.lead_notification_email
+      ? (data.source === "dashboard" ? "Currently set here in the dashboard." : "Currently using the server's default (LEAD_NOTIFICATION_EMAIL).")
+      : "No notification email configured yet.";
+  }
+
+  async function loadNotificationSettings() {
+    try {
+      const data = await AdminAPI.get("/admin/settings/notifications");
+      notificationsCard.hidden = false;
+      renderNotificationSource(data);
+    } catch (err) {
+      if (err.status !== 403) showToast("Could not load notification settings.", { tone: "error" });
+    }
+  }
+
+  document.getElementById("save-notification-email-btn").addEventListener("click", async () => {
+    showFieldError(notificationsError, "");
+    try {
+      const data = await putJson("/admin/settings/notifications", {
+        lead_notification_email: notificationEmail.value,
+      });
+      renderNotificationSource(data);
+      showToast("Notification email saved.");
+    } catch (err) {
+      showFieldError(notificationsError, err.message);
+    }
+  });
+
+  document.getElementById("clear-notification-email-btn").addEventListener("click", async () => {
+    showFieldError(notificationsError, "");
+    try {
+      const data = await putJson("/admin/settings/notifications", { lead_notification_email: "" });
+      renderNotificationSource(data);
+      showToast("Reset to default.");
+    } catch (err) {
+      showFieldError(notificationsError, err.message);
+    }
+  });
+
+  // ---------------- Appearance ----------------
   const primaryPicker = document.getElementById("primary-color-picker");
   const primaryText = document.getElementById("primary-color");
   const accentPicker = document.getElementById("accent-color-picker");
@@ -61,18 +247,7 @@
   }
 
   async function saveTheme() {
-    const csrfRes = await fetch("/admin/csrf-token", { credentials: "same-origin" });
-    const { csrf_token } = await csrfRes.json();
-
-    const res = await fetch("/admin/settings", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", "X-CSRFToken": csrf_token },
-      credentials: "same-origin",
-      body: JSON.stringify({ primary_color: primaryText.value, accent_color: accentText.value }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || data.error || "Could not save theme.");
-    return data;
+    return putJson("/admin/settings", { primary_color: primaryText.value, accent_color: accentText.value });
   }
 
   document.getElementById("save-theme-btn").addEventListener("click", async () => {
@@ -99,6 +274,8 @@
     }
   });
 
+  loadAccount();
+  loadNotificationSettings();
   loadCurrentTheme();
 </script>
 {% endblock %}
