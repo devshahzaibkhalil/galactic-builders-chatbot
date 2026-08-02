@@ -51,6 +51,18 @@ def set_password(user: AdminUser, raw_password: str) -> None:
     user.locked_until = None
 
 
+def verify_password(user: AdminUser, raw_password: str) -> bool:
+    """Used by self-service account changes (email/username/password) to
+    confirm the admin re-supplied their current password before the change
+    is applied. Unlike authenticate(), this never touches lockout state -
+    it's only ever called on an already-authenticated session."""
+    try:
+        _hasher.verify(user.password_hash, raw_password)
+        return True
+    except VerifyMismatchError:
+        return False
+
+
 def requires_mfa(user: AdminUser) -> bool:
     """Superadmins with MFA enabled must complete a second factor at login.
     Enforcement of "superadmins must have MFA enabled" as a hard policy
