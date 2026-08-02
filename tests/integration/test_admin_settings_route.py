@@ -1,7 +1,7 @@
 import pytest
 
 from app import create_app
-from app.constants.roles import AGENT, ADMIN
+from app.constants.roles import AGENT, ADMIN, SUPERADMIN
 from app.services.authentication_service import create_admin_user
 
 
@@ -86,3 +86,148 @@ def test_settings_page_renders_when_logged_in(client, app):
     resp = client.get("/admin/dashboard/settings")
     assert resp.status_code == 200
     assert b"Appearance" in resp.data
+
+
+# ---------------------------------------------------------------------------
+# My account
+# ---------------------------------------------------------------------------
+
+def test_get_account_returns_current_user(client, app):
+    _login_as(client, app, username="admin1", role=ADMIN)
+    resp = client.get("/admin/settings/account")
+    assert resp.status_code == 200
+    body = resp.get_json()
+    assert body["username"] == "admin1"
+    assert body["email"] == "admin1@example.com"
+
+
+def test_update_account_changes_email_and_username(client, app):
+    _login_as(client, app, username="admin1", role=ADMIN)
+    resp = client.put(
+        "/admin/settings/account",
+        json={
+            "email": "newmail@example.com",
+            "username": "admin1renamed",
+            "current_password": "Str0ng!Passw0rd",
+        },
+        headers=_csrf_headers(client),
+    )
+    assert resp.status_code == 200
+    body = resp.get_json()
+    assert body["email"] == "newmail@example.com"
+    assert body["username"] == "admin1renamed"
+
+
+def test_update_account_rejects_wrong_current_password(client, app):
+    _login_as(client, app, username="admin1", role=ADMIN)
+    resp = client.put(
+        "/admin/settings/account",
+        json={"email": "newmail@example.com", "username": "admin1", "current_password": "wrong-password"},
+        headers=_csrf_headers(client),
+    )
+    assert resp.status_code == 401
+
+
+def test_update_account_rejects_duplicate_email(client, app):
+    _login_as(client, app, username="admin1", role=ADMIN)
+    _login_as(client, app, username="admin2", role=ADMIN)
+    resp = client.put(
+        "/admin/settings/account",
+        json={
+            "email": "admin1@example.com",
+            "username": "admin2",
+            "current_password": "Str0ng!Passw0rd",
+        },
+        headers=_csrf_headers(client),
+    )
+    assert resp.status_code == 409
+
+
+def test_update_password_success_and_relogin(client, app):
+    _login_as(client, app, username="admin1", role=ADMIN)
+    resp = client.put(
+        "/admin/settings/password",
+        json={"current_password": "Str0ng!Passw0rd", "new_password": "N3w!Str0ngerPassw0rd"},
+        headers=_csrf_headers(client),
+    )
+    assert resp.status_code == 200
+
+    client.post("/admin/logout", headers=_csrf_headers(client))
+    login_resp = client.post(
+        "/admin/login",
+        json={"username": "admin1", "password": "N3w!Str0ngerPassw0rd"},
+        headers=_csrf_headers(client),
+    )
+    assert login_resp.status_code == 200
+
+
+def test_update_password_rejects_wrong_current_password(client, app):
+    _login_as(client, app, username="admin1", role=ADMIN)
+    resp = client.put(
+        "/admin/settings/password",
+        json={"current_password": "wrong-password", "new_password": "N3w!Str0ngerPassw0rd"},
+        headers=_csrf_headers(client),
+    )
+    assert resp.status_code == 401
+
+
+def test_update_password_rejects_weak_password(client, app):
+    _login_as(client, app, username="admin1", role=ADMIN)
+    resp = client.put(
+        "/admin/settings/password",
+        json={"current_password": "Str0ng!Passw0rd", "new_password": "weak"},
+        headers=_csrf_headers(client),
+    )
+    assert resp.status_code == 400
+
+
+# ---------------------------------------------------------------------------
+# Lead notification email
+# ---------------------------------------------------------------------------
+
+def test_admin_cannot_view_notification_settings(client, app):
+    _login_as(client, app, username="admin1", role=ADMIN)
+    resp = client.get("/admin/settings/notifications")
+    assert resp.status_code == 403
+
+
+def test_superadmin_can_update_lead_notification_email(client, app):
+    _login_as(client, app, username="super1", role=SUPERADMIN)
+    resp = client.put(
+        "/admin/settings/notifications",
+        json={"lead_notification_email": "leads@example.com"},
+        headers=_csrf_headers(client),
+    )
+    assert resp.status_code == 200
+    body = resp.get_json()
+    assert body["lead_notification_email"] == "leads@example.com"
+    assert body["source"] == "dashboard"
+
+    get_resp = client.get("/admin/settings/notifications")
+    assert get_resp.get_json()["lead_notification_email"] == "leads@example.com"
+
+
+def test_superadmin_can_clear_lead_notification_email_override(client, app):
+    _login_as(client, app, username="super1", role=SUPERADMIN)
+    client.put(
+        "/admin/settings/notifications",
+        json={"lead_notification_email": "leads@example.com"},
+        headers=_csrf_headers(client),
+    )
+    resp = client.put(
+        "/admin/settings/notifications",
+        json={"lead_notification_email": ""},
+        headers=_csrf_headers(client),
+    )
+    assert resp.status_code == 200
+    assert resp.get_json()["source"] == "env"
+
+
+def test_superadmin_rejects_invalid_lead_notification_email(client, app):
+    _login_as(client, app, username="super1", role=SUPERADMIN)
+    resp = client.put(
+        "/admin/settings/notifications",
+        json={"lead_notification_email": "not-an-email"},
+        headers=_csrf_headers(client),
+    )
+    assert resp.status_code == 422
