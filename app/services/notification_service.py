@@ -10,7 +10,6 @@ required unless the admin explicitly sets them.
 """
 from __future__ import annotations
 
-import os
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -18,7 +17,7 @@ from sqlalchemy.orm import Session
 from app.models.admin_notification import AdminNotification
 from app.models.admin_user import AdminUser
 from app.repositories import notification_repository
-from app.services import smtp_transport
+from app.services import dashboard_settings_service, smtp_transport
 
 
 def _maybe_email(session: Session, notification: AdminNotification) -> None:
@@ -32,8 +31,10 @@ def _maybe_email(session: Session, notification: AdminNotification) -> None:
         admin = session.get(AdminUser, notification.recipient_admin_id)
         recipient = admin.email if admin else None
     else:
-        # Broadcast notification - goes to the configured ops inbox, if set.
-        recipient = os.environ.get("LEAD_NOTIFICATION_EMAIL")
+        # Broadcast notification - goes to the configured ops inbox. A
+        # dashboard override (Settings -> Lead notifications) wins over the
+        # LEAD_NOTIFICATION_EMAIL env var if one has been set.
+        recipient = dashboard_settings_service.get_lead_notification_email(session)
 
     if not recipient:
         return
