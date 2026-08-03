@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="description"
-        content="Galactic Builders LLC project assistant"
-    >
+    <meta name="description" content="Galactic Builders LLC project assistant">
 
     <title>Galactic Builders Project Assistant</title>
 
@@ -97,27 +92,24 @@
 
             color: var(--white);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-700),
-                    var(--navy-900)
-                );
+                    var(--navy-900));
 
-            box-shadow:
-                0 16px 42px rgba(13, 34, 56, 0.36);
+            /* box-shadow: */
+            /* 0 16px 42px rgba(13, 34, 56, 0.36); */
 
             display: grid;
             place-items: center;
 
             transition:
-                transform 180ms ease,
-                box-shadow 180ms ease;
+                transform 180ms ease;
         }
 
         .chat-launcher:hover {
             transform: translateY(-4px);
-            box-shadow:
-                0 22px 50px rgba(13, 34, 56, 0.44);
+            /* box-shadow: */
+            /* 0 22px 50px rgba(13, 34, 56, 0.44); */
         }
 
         .chat-launcher svg {
@@ -154,7 +146,7 @@
             border-radius: 24px;
 
             background: var(--surface);
-            box-shadow: var(--shadow);
+            /* box-shadow: var(--shadow); */
 
             overflow: hidden;
             display: flex;
@@ -165,8 +157,7 @@
             pointer-events: none;
 
             transform:
-                translateY(18px)
-                scale(0.97);
+                translateY(18px) scale(0.97);
 
             transform-origin: bottom right;
 
@@ -182,8 +173,7 @@
             pointer-events: auto;
 
             transform:
-                translateY(0)
-                scale(1);
+                translateY(0) scale(1);
         }
 
         /* Header */
@@ -195,16 +185,12 @@
             color: var(--white);
 
             background:
-                radial-gradient(
-                    circle at top right,
+                radial-gradient(circle at top right,
                     rgba(210, 163, 59, 0.24),
-                    transparent 42%
-                ),
-                linear-gradient(
-                    135deg,
+                    transparent 42%),
+                linear-gradient(135deg,
                     var(--navy-950),
-                    var(--navy-700)
-                );
+                    var(--navy-700));
 
             display: flex;
             align-items: center;
@@ -341,11 +327,9 @@
 
             color: var(--navy-800);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     #ffffff,
-                    #f4f7f9
-                );
+                    #f4f7f9);
 
             box-shadow:
                 0 4px 14px rgba(13, 34, 56, 0.06);
@@ -365,11 +349,9 @@
             color: var(--white);
             border-color: var(--navy-800);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-700),
-                    var(--navy-900)
-                );
+                    var(--navy-900));
             box-shadow:
                 0 8px 20px rgba(13, 34, 56, 0.16);
             transform: translateY(-1px);
@@ -391,11 +373,9 @@
             color: var(--navy-950);
             border-color: var(--gold-500);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--gold-300),
-                    var(--gold-500)
-                );
+                    var(--gold-500));
             box-shadow:
                 0 0 0 4px rgba(210, 163, 59, 0.12),
                 0 8px 20px rgba(13, 34, 56, 0.12);
@@ -411,10 +391,7 @@
             border-radius: 18px;
 
             animation:
-                voicePulse
-                1.2s
-                infinite
-                ease-out;
+                voicePulse 1.2s infinite ease-out;
         }
 
         @keyframes voicePulse {
@@ -443,12 +420,10 @@
             scroll-behavior: smooth;
 
             background:
-                linear-gradient(
-                    180deg,
+                linear-gradient(180deg,
                     #f2f6f9 0%,
                     #f8fafc 56%,
-                    #ffffff 100%
-                );
+                    #ffffff 100%);
         }
 
         .messages-container::-webkit-scrollbar {
@@ -472,16 +447,12 @@
             border-radius: 20px;
 
             background:
-                radial-gradient(
-                    circle at 94% 3%,
+                radial-gradient(circle at 94% 3%,
                     rgba(210, 163, 59, 0.13),
-                    transparent 34%
-                ),
-                linear-gradient(
-                    145deg,
+                    transparent 34%),
+                linear-gradient(145deg,
                     #ffffff,
-                    #fbfcfe
-                );
+                    #fbfcfe);
 
             box-shadow:
                 0 12px 30px rgba(13, 34, 56, 0.075);
@@ -500,12 +471,10 @@
             height: 4px;
 
             background:
-                linear-gradient(
-                    90deg,
+                linear-gradient(90deg,
                     var(--gold-500),
                     var(--gold-300),
-                    var(--navy-700)
-                );
+                    var(--navy-700));
         }
 
         .welcome-label {
@@ -556,11 +525,9 @@
             border-radius: 14px;
 
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     rgba(13, 34, 56, 0.025),
-                    rgba(210, 163, 59, 0.045)
-                );
+                    rgba(210, 163, 59, 0.045));
 
             display: grid;
             grid-template-columns:
@@ -591,11 +558,9 @@
 
             color: var(--white);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-700),
-                    var(--navy-900)
-                );
+                    var(--navy-900));
 
             font-size: 10px;
             font-weight: 800;
@@ -665,11 +630,9 @@
 
             color: var(--white);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-700),
-                    var(--navy-900)
-                );
+                    var(--navy-900));
 
             display: flex;
             align-items: center;
@@ -684,11 +647,9 @@
 
             color: var(--white);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-800),
-                    var(--navy-950)
-                );
+                    var(--navy-950));
         }
 
         .more-services-button svg {
@@ -1116,11 +1077,9 @@
 
             color: var(--navy-900);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     #ffffff,
-                    #f7f9fb
-                );
+                    #f7f9fb);
 
             font-size: 11px;
             font-weight: 700;
@@ -1155,11 +1114,9 @@
 
             color: var(--white);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-700),
-                    var(--navy-900)
-                );
+                    var(--navy-900));
 
             font-size: 10px;
             font-weight: 800;
@@ -1214,11 +1171,9 @@
 
             color: var(--navy-900);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     #ffffff,
-                    #f7f9fb
-                );
+                    #f7f9fb);
 
             font-size: 11px;
             font-weight: 720;
@@ -1253,11 +1208,9 @@
 
             color: var(--white);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-700),
-                    var(--navy-900)
-                );
+                    var(--navy-900));
 
             display: grid;
             place-items: center;
@@ -1276,16 +1229,12 @@
             border-radius: 16px;
 
             background:
-                radial-gradient(
-                    circle at top right,
+                radial-gradient(circle at top right,
                     rgba(210, 163, 59, 0.12),
-                    transparent 34%
-                ),
-                linear-gradient(
-                    145deg,
+                    transparent 34%),
+                linear-gradient(145deg,
                     #ffffff,
-                    #f9fbfc
-                );
+                    #f9fbfc);
 
             box-shadow:
                 0 10px 26px rgba(13, 34, 56, 0.07);
@@ -1321,11 +1270,9 @@
 
             color: var(--white);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-700),
-                    var(--navy-900)
-                );
+                    var(--navy-900));
 
             font-size: 15px;
             font-weight: 820;
@@ -1416,11 +1363,9 @@
             color: var(--white);
             border-color: var(--navy-800);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-700),
-                    var(--navy-900)
-                );
+                    var(--navy-900));
         }
 
         .estimate-next-button:hover {
@@ -1447,11 +1392,9 @@
 
             color: var(--navy-900);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     #ffffff,
-                    #f6f8fa
-                );
+                    #f6f8fa);
 
             font-size: 11px;
             font-weight: 740;
@@ -1477,11 +1420,9 @@
             color: var(--white);
             border-color: var(--navy-800);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-700),
-                    var(--navy-900)
-                );
+                    var(--navy-900));
         }
 
         .lead-progress {
@@ -1511,16 +1452,12 @@
             border-radius: 17px;
 
             background:
-                radial-gradient(
-                    circle at top right,
+                radial-gradient(circle at top right,
                     rgba(210, 163, 59, 0.13),
-                    transparent 36%
-                ),
-                linear-gradient(
-                    145deg,
+                    transparent 36%),
+                linear-gradient(145deg,
                     #ffffff,
-                    #f9fbfc
-                );
+                    #f9fbfc);
 
             box-shadow:
                 0 12px 28px rgba(13, 34, 56, 0.075);
@@ -1553,8 +1490,7 @@
 
             display: grid;
             grid-template-columns:
-                minmax(0, 0.78fr)
-                minmax(0, 1.22fr);
+                minmax(0, 0.78fr) minmax(0, 1.22fr);
             gap: 8px 11px;
         }
 
@@ -1598,8 +1534,7 @@
 
             display: grid;
             grid-template-columns:
-                minmax(0, 1.3fr)
-                minmax(0, 0.7fr);
+                minmax(0, 1.3fr) minmax(0, 0.7fr);
             gap: 8px;
         }
 
@@ -1628,11 +1563,9 @@
             color: var(--white);
             border-color: var(--navy-800);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-700),
-                    var(--navy-900)
-                );
+                    var(--navy-900));
         }
 
         .lead-submit-button:hover {
@@ -1655,11 +1588,9 @@
 
             color: #1d5f3e;
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     rgba(47, 154, 99, 0.1),
-                    rgba(255, 255, 255, 0.96)
-                );
+                    rgba(255, 255, 255, 0.96));
 
             box-shadow:
                 0 10px 26px rgba(13, 34, 56, 0.06);
@@ -1757,11 +1688,9 @@
 
             color: var(--white);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--navy-700),
-                    var(--navy-900)
-                );
+                    var(--navy-900));
         }
 
         .message-time {
@@ -1812,10 +1741,7 @@
             background: var(--muted);
 
             animation:
-                typingAnimation
-                1.1s
-                infinite
-                ease-in-out;
+                typingAnimation 1.1s infinite ease-in-out;
         }
 
         .typing-dot:nth-child(2) {
@@ -1827,6 +1753,7 @@
         }
 
         @keyframes typingAnimation {
+
             0%,
             60%,
             100% {
@@ -1958,11 +1885,9 @@
 
             color: var(--navy-950);
             background:
-                linear-gradient(
-                    145deg,
+                linear-gradient(145deg,
                     var(--gold-300),
-                    var(--gold-500)
-                );
+                    var(--gold-500));
 
             display: grid;
             place-items: center;
@@ -2131,45 +2056,20 @@
 </head>
 
 <body>
-    <section
-        id="chatWindow"
-        class="chat-window"
-        aria-label="Galactic Builders Project Assistant"
-        aria-hidden="true"
-    >
+    <section id="chatWindow" class="chat-window" aria-label="Galactic Builders Project Assistant" aria-hidden="true">
         <header class="chat-header">
             <div class="brand-logo" aria-hidden="true">
                 <svg viewBox="0 0 64 64" fill="none">
-                    <path
-                        d="M9 31L32 12L55 31"
-                        stroke="#FFFFFF"
-                        stroke-width="5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
+                    <path d="M9 31L32 12L55 31" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"
+                        stroke-linejoin="round" />
 
-                    <path
-                        d="M16 29V51H48V29"
-                        stroke="#FFFFFF"
-                        stroke-width="5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
+                    <path d="M16 29V51H48V29" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"
+                        stroke-linejoin="round" />
 
-                    <path
-                        d="M31 29H44V43H34"
-                        stroke="#D2A33B"
-                        stroke-width="5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
+                    <path d="M31 29H44V43H34" stroke="#D2A33B" stroke-width="5" stroke-linecap="round"
+                        stroke-linejoin="round" />
 
-                    <path
-                        d="M13 54H52"
-                        stroke="#D2A33B"
-                        stroke-width="4"
-                        stroke-linecap="round"
-                    />
+                    <path d="M13 54H52" stroke="#D2A33B" stroke-width="4" stroke-linecap="round" />
                 </svg>
             </div>
 
@@ -2185,105 +2085,47 @@
             </div>
 
             <div class="header-actions">
-                <button
-                    id="newChatButton"
-                    class="header-button"
-                    type="button"
-                    aria-label="Start a new chat"
-                    title="Start a new chat"
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
+                <button id="newChatButton" class="header-button" type="button" aria-label="Start a new chat"
+                    title="Start a new chat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
                         <path d="M12 20h9"></path>
                         <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"></path>
                     </svg>
                 </button>
 
-                <button
-                    id="speakToggleButton"
-                    class="header-button"
-                    type="button"
-                    aria-label="Turn on voice replies"
-                    aria-pressed="false"
-                    title="Turn on voice replies"
-                >
-                    <svg
-                        class="icon-speaker-on"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                        hidden
-                    >
+                <button id="speakToggleButton" class="header-button" type="button" aria-label="Turn on voice replies"
+                    aria-pressed="false" title="Turn on voice replies">
+                    <svg class="icon-speaker-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
                         <path d="M11 5L6 9H3v6h3l5 4V5z"></path>
                         <path d="M15.5 8.5a5 5 0 010 7"></path>
                         <path d="M18.5 5.5a9 9 0 010 13"></path>
                     </svg>
 
-                    <svg
-                        class="icon-speaker-off"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
+                    <svg class="icon-speaker-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M11 5L6 9H3v6h3l5 4V5z"></path>
                         <path d="M23 9l-6 6"></path>
                         <path d="M17 9l6 6"></path>
                     </svg>
                 </button>
 
-                <button
-                    id="backButton"
-                    class="header-button"
-                    type="button"
-                    aria-label="Back to services"
-                    title="Back to services"
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
+                <button id="backButton" class="header-button" type="button" aria-label="Back to services"
+                    title="Back to services">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
                         <path d="M19 12H5"></path>
                         <path d="M12 19l-7-7 7-7"></path>
                     </svg>
                 </button>
 
-                
 
-                <button
-                    id="closeChatButton"
-                    class="header-button"
-                    type="button"
-                    aria-label="Close chatbot"
-                    title="Close chatbot"
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        aria-hidden="true"
-                    >
+
+                <button id="closeChatButton" class="header-button" type="button" aria-label="Close chatbot"
+                    title="Close chatbot">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        aria-hidden="true">
                         <path d="M18 6L6 18"></path>
                         <path d="M6 6l12 12"></path>
                     </svg>
@@ -2291,12 +2133,7 @@
             </div>
         </header>
 
-        <main
-            id="messagesContainer"
-            class="messages-container"
-            aria-live="polite"
-            aria-relevant="additions"
-        >
+        <main id="messagesContainer" class="messages-container" aria-live="polite" aria-relevant="additions">
             <div id="welcomeCard" class="welcome-card">
                 <span class="welcome-label">
                     Out of This World Service
@@ -2312,10 +2149,7 @@
                     toward the next practical step.
                 </p>
 
-                <div
-                    class="project-sequence"
-                    aria-label="How the project request works"
-                >
+                <div class="project-sequence" aria-label="How the project request works">
                     <div class="sequence-step">
                         <span class="sequence-number">1</span>
 
@@ -2341,60 +2175,29 @@
                     </div>
                 </div>
 
-                <div
-                    id="quickActions"
-                    class="quick-actions"
-                >
-                    <button
-                        id="requestEstimateButton"
-                        class="quick-action"
-                        type="button"
-                        data-estimate="open"
-                    >
+                <div id="quickActions" class="quick-actions">
+                    <button id="requestEstimateButton" class="quick-action" type="button" data-estimate="open">
                         Request an Estimate
                     </button>
 
-                    <button
-                        class="quick-action"
-                        type="button"
-
-                        data-service="kitchen_remodeling"                        data-message="I need help with kitchen remodeling."
-                    >
+                    <button class="quick-action" type="button" data-service="kitchen_remodeling"
+                        data-message="I need help with kitchen remodeling.">
                         Kitchen Remodeling
                     </button>
 
-                    <button
-                        class="quick-action"
-                        type="button"
-
-                        data-service="roof_repair"                        data-message="I need help with roof repair."
-                    >
+                    <button class="quick-action" type="button" data-service="roof_repair"
+                        data-message="I need help with roof repair.">
                         Roofing Assistance
                     </button>
 
-                    <button
-                        class="quick-action"
-                        type="button"
-
-                        data-service="bathroom_remodeling"                        data-message="I need help with bathroom remodeling."
-                    >
+                    <button class="quick-action" type="button" data-service="bathroom_remodeling"
+                        data-message="I need help with bathroom remodeling.">
                         Bathroom Remodeling
                     </button>
 
-                    <button
-                        id="recentProjectsButton"
-                        class="quick-action recent-projects-button"
-                        type="button"
-                    >
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
+                    <button id="recentProjectsButton" class="quick-action recent-projects-button" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <rect x="3" y="3" width="18" height="18" rx="2"></rect>
                             <circle cx="8.5" cy="8.5" r="1.5"></circle>
                             <path d="M21 15l-5-5L5 21"></path>
@@ -2403,166 +2206,89 @@
                         <span>See Recent Projects</span>
                     </button>
 
-                    <button
-                        id="moreServicesButton"
-                        class="quick-action more-services-button"
-                        type="button"
-                        aria-expanded="false"
-                        aria-controls="moreServices"
-                    >
+                    <button id="moreServicesButton" class="quick-action more-services-button" type="button"
+                        aria-expanded="false" aria-controls="moreServices">
                         <span>More Services</span>
 
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M6 9l6 6 6-6"></path>
                         </svg>
                     </button>
 
-                    <div
-                        id="moreServices"
-                        class="more-services"
-                    >
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="deck_construction"                            data-message="I need help with deck construction."
-                        >
+                    <div id="moreServices" class="more-services">
+                        <button class="quick-action" type="button" data-service="deck_construction"
+                            data-message="I need help with deck construction.">
                             Deck Construction
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="gutter_cleaning"                            data-message="I need help with gutter cleaning."
-                        >
+                        <button class="quick-action" type="button" data-service="gutter_cleaning"
+                            data-message="I need help with gutter cleaning.">
                             Gutter Cleaning
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="basement_remodeling"                            data-message="I need help with basement remodeling."
-                        >
+                        <button class="quick-action" type="button" data-service="basement_remodeling"
+                            data-message="I need help with basement remodeling.">
                             Basement Remodeling
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="fan_installation"                            data-message="I need help with fan installation."
-                        >
+                        <button class="quick-action" type="button" data-service="fan_installation"
+                            data-message="I need help with fan installation.">
                             Fan Installation
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="furniture_assembly"                            data-message="I need help with furniture assembly."
-                        >
+                        <button class="quick-action" type="button" data-service="furniture_assembly"
+                            data-message="I need help with furniture assembly.">
                             Furniture Assembly
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="plumbing_fixture_installation"                            data-message="I need help with plumbing fixture installation."
-                        >
+                        <button class="quick-action" type="button" data-service="plumbing_fixture_installation"
+                            data-message="I need help with plumbing fixture installation.">
                             Plumbing Fixture Installation
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="roof_installation"                            data-message="I need help with roof installation."
-                        >
+                        <button class="quick-action" type="button" data-service="roof_installation"
+                            data-message="I need help with roof installation.">
                             Roof Installation
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="home_addition_construction"                            data-message="I need help with home addition construction."
-                        >
+                        <button class="quick-action" type="button" data-service="home_addition_construction"
+                            data-message="I need help with home addition construction.">
                             Home Addition Construction
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="exterior_structure_repairs"                            data-message="I need help with exterior structure repairs."
-                        >
+                        <button class="quick-action" type="button" data-service="exterior_structure_repairs"
+                            data-message="I need help with exterior structure repairs.">
                             Exterior Structure Repairs
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="interior_painting"                            data-message="I need help with interior painting."
-                        >
+                        <button class="quick-action" type="button" data-service="interior_painting"
+                            data-message="I need help with interior painting.">
                             Paint Indoors
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="accessory_building_construction"                            data-message="I need help with accessory building construction."
-                        >
+                        <button class="quick-action" type="button" data-service="accessory_building_construction"
+                            data-message="I need help with accessory building construction.">
                             Accessory Building Construction
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-
-                        data-service="flooring_installation"                            data-message="I need help with flooring installation."
-                        >
+                        <button class="quick-action" type="button" data-service="flooring_installation"
+                            data-message="I need help with flooring installation.">
                             Flooring Installation
                         </button>
 
-                        <button
-                            class="quick-action"
-                            type="button"
-                            data-service="doors_windows"
-                            data-message="I need help with doors and windows."
-                        >
+                        <button class="quick-action" type="button" data-service="doors_windows"
+                            data-message="I need help with doors and windows.">
                             Doors &amp; Windows
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div
-                id="typingRow"
-                class="typing-row"
-                aria-label="Assistant is typing"
-            >
+            <div id="typingRow" class="typing-row" aria-label="Assistant is typing">
                 <div class="bot-avatar" aria-hidden="true">
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path d="M3 11.5L12 4l9 7.5"></path>
                         <path d="M5.5 10v9h13v-9"></path>
                     </svg>
@@ -2577,55 +2303,19 @@
         </main>
 
         <footer class="chat-footer">
-            <div
-                id="errorMessage"
-                class="error-message"
-                role="alert"
-            ></div>
+            <div id="errorMessage" class="error-message" role="alert"></div>
 
-            <div
-                id="voiceStatus"
-                class="voice-status"
-                role="status"
-                aria-live="polite"
-                hidden
-            ></div>
+            <div id="voiceStatus" class="voice-status" role="status" aria-live="polite" hidden></div>
 
             <form id="messageForm" class="composer">
-                <textarea
-                    id="messageInput"
-                    class="message-input"
-                    rows="1"
-                    maxlength="4000"
-                    placeholder="Describe your project..."
-                    aria-label="Write your message"
-                    required
-                ></textarea>
+                <textarea id="messageInput" class="message-input" rows="1" maxlength="4000"
+                    placeholder="Describe your project..." aria-label="Write your message" required></textarea>
 
-                <button
-                    id="voiceButton"
-                    class="composer-voice-button"
-                    type="button"
-                    aria-label="Start voice input"
-                    aria-pressed="false"
-                    title="Voice input"
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
-                        <rect
-                            x="9"
-                            y="2"
-                            width="6"
-                            height="12"
-                            rx="3"
-                        ></rect>
+                <button id="voiceButton" class="composer-voice-button" type="button" aria-label="Start voice input"
+                    aria-pressed="false" title="Voice input">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <rect x="9" y="2" width="6" height="12" rx="3"></rect>
 
                         <path d="M5 10a7 7 0 0014 0"></path>
                         <path d="M12 17v5"></path>
@@ -2633,21 +2323,9 @@
                     </svg>
                 </button>
 
-                <button
-                    id="sendButton"
-                    class="send-button"
-                    type="submit"
-                    aria-label="Send message"
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
+                <button id="sendButton" class="send-button" type="submit" aria-label="Send message">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
                         <path d="M22 2L11 13"></path>
                         <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
                     </svg>
@@ -2661,28 +2339,11 @@
             </p>
         </footer>
 
-        <div
-            id="projectsOverlay"
-            class="projects-overlay"
-            hidden
-        >
+        <div id="projectsOverlay" class="projects-overlay" hidden>
             <header class="projects-overlay-header">
-                <button
-                    id="projectsBackButton"
-                    class="projects-overlay-back"
-                    type="button"
-                    aria-label="Back"
-                    hidden
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
+                <button id="projectsBackButton" class="projects-overlay-back" type="button" aria-label="Back" hidden>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
                         <path d="M19 12H5"></path>
                         <path d="M12 19l-7-7 7-7"></path>
                     </svg>
@@ -2690,112 +2351,49 @@
 
                 <h2 id="projectsOverlayTitle">Recent Projects</h2>
 
-                <button
-                    id="projectsCloseButton"
-                    class="projects-overlay-close"
-                    type="button"
-                    aria-label="Close recent projects"
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
+                <button id="projectsCloseButton" class="projects-overlay-close" type="button"
+                    aria-label="Close recent projects">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
                         <path d="M6 6l12 12"></path>
                         <path d="M18 6L6 18"></path>
                     </svg>
                 </button>
             </header>
 
-            <div
-                id="projectsListView"
-                class="projects-list-view"
-            ></div>
+            <div id="projectsListView" class="projects-list-view"></div>
 
-            <div
-                id="projectGalleryView"
-                class="project-gallery-view"
-                hidden
-            ></div>
+            <div id="projectGalleryView" class="project-gallery-view" hidden></div>
         </div>
 
-        <div
-            id="imageLightbox"
-            class="image-lightbox"
-            hidden
-        >
-            <button
-                id="lightboxCloseButton"
-                class="lightbox-close"
-                type="button"
-                aria-label="Close image"
-            >
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                >
+        <div id="imageLightbox" class="image-lightbox" hidden>
+            <button id="lightboxCloseButton" class="lightbox-close" type="button" aria-label="Close image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
                     <path d="M6 6l12 12"></path>
                     <path d="M18 6L6 18"></path>
                 </svg>
             </button>
 
-            <img
-                id="lightboxImage"
-                src=""
-                alt=""
-            >
+            <img id="lightboxImage" src="" alt="">
         </div>
     </section>
 
-    <button
-        id="chatLauncher"
-        class="chat-launcher"
-        type="button"
-        aria-label="Open Galactic Project Assistant"
-        aria-expanded="false"
-    >
+    <button id="chatLauncher" class="chat-launcher" type="button" aria-label="Open Galactic Project Assistant"
+        aria-expanded="false">
         <span class="launcher-status"></span>
 
         <svg viewBox="0 0 64 64" fill="none">
-            <path
-                d="M9 31L32 12L55 31"
-                stroke="#FFFFFF"
-                stroke-width="5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
+            <path d="M9 31L32 12L55 31" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"
+                stroke-linejoin="round" />
 
-            <path
-                d="M16 29V51H48V29"
-                stroke="#FFFFFF"
-                stroke-width="5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
+            <path d="M16 29V51H48V29" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"
+                stroke-linejoin="round" />
 
-            <path
-                d="M31 29H44V43H34"
-                stroke="#D2A33B"
-                stroke-width="5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
+            <path d="M31 29H44V43H34" stroke="#D2A33B" stroke-width="5" stroke-linecap="round"
+                stroke-linejoin="round" />
 
-            <path
-                d="M13 54H52"
-                stroke="#D2A33B"
-                stroke-width="4"
-                stroke-linecap="round"
-            />
+            <path d="M13 54H52" stroke="#D2A33B" stroke-width="4" stroke-linecap="round" />
         </svg>
     </button>
 
@@ -4137,7 +3735,7 @@
             if (
                 window.crypto &&
                 typeof window.crypto.randomUUID ===
-                    "function"
+                "function"
             ) {
                 return window.crypto.randomUUID();
             }
@@ -4231,10 +3829,9 @@
                 document.createElement("div");
 
             row.className =
-                `message-row ${
-                    sender === "customer"
-                        ? "customer"
-                        : "bot"
+                `message-row ${sender === "customer"
+                    ? "customer"
+                    : "bot"
                 }`;
 
             if (sender !== "customer") {
@@ -4419,9 +4016,9 @@
                     Estimate request
                 </strong>
                 &nbsp; Step ${Math.min(
-                    currentIndex + 1,
-                    order.length
-                )} of ${order.length}
+                currentIndex + 1,
+                order.length
+            )} of ${order.length}
             `;
 
             messagesContainer.insertBefore(
@@ -4529,7 +4126,7 @@
                 appendMessage(
                     "customer",
                     options.customerMessage ||
-                        "NO"
+                    "NO"
                 );
             }
 
@@ -4779,7 +4376,7 @@
                 )
                     ? normalized
                     : US_STATE_NAMES[
-                        normalized
+                    normalized
                     ];
 
             return code
@@ -5053,7 +4650,7 @@
 
             if (
                 leadCapture.step ===
-                    "phone"
+                "phone"
             ) {
                 leadCapture.data.phone =
                     result.value;
@@ -5077,12 +4674,12 @@
 
             leadCapture.step =
                 nextSteps[
-                    leadCapture.step
+                leadCapture.step
                 ];
 
             if (
                 leadCapture.step ===
-                    "review"
+                "review"
             ) {
                 leadCapture.data.submissionDate =
                     formatBusinessSubmissionDate();
@@ -5157,7 +4754,7 @@
         function contactWindowOptions() {
             if (
                 leadCapture.data.contactDay ===
-                    "Saturday"
+                "Saturday"
             ) {
                 return [
                     {
@@ -5564,7 +5161,7 @@
                 if (!response.ok) {
                     const fieldMessages =
                         data.fields &&
-                        typeof data.fields ===
+                            typeof data.fields ===
                             "object"
                             ? Object.values(
                                 data.fields
@@ -5802,7 +5399,7 @@ Submission Date: ${finalData.submissionDate}`
                         ).filter(
                             ([, estimate]) =>
                                 estimate.category ===
-                                    categoryName
+                                categoryName
                         );
 
                     if (services.length === 0) {
@@ -7560,7 +7157,7 @@ Submission Date: ${finalData.submissionDate}`
         ) {
             const category =
                 ADDITIONAL_SERVICE_FAQS[
-                    serviceKey
+                serviceKey
                 ];
 
             if (!category) {
@@ -7601,7 +7198,7 @@ Submission Date: ${finalData.submissionDate}`
 
             const category =
                 ADDITIONAL_SERVICE_FAQS[
-                    serviceKey
+                serviceKey
                 ];
 
             if (!category) {
@@ -7721,7 +7318,7 @@ Submission Date: ${finalData.submissionDate}`
         ) {
             const category =
                 ADDITIONAL_SERVICE_FAQS[
-                    serviceKey
+                serviceKey
                 ];
 
             if (!category) {
@@ -7764,7 +7361,7 @@ Submission Date: ${finalData.submissionDate}`
         ) {
             const category =
                 ADDITIONAL_SERVICE_FAQS[
-                    serviceKey
+                serviceKey
                 ];
 
             if (!category) {
@@ -7800,7 +7397,7 @@ Submission Date: ${finalData.submissionDate}`
         ) {
             const category =
                 ADDITIONAL_SERVICE_FAQS[
-                    serviceKey
+                serviceKey
                 ];
 
             if (!category) {
@@ -7992,7 +7589,7 @@ Submission Date: ${finalData.submissionDate}`
 
             if (
                 serviceKey ===
-                    "deck_construction" &&
+                "deck_construction" &&
                 choice === "YES"
             ) {
                 resetDeckFaqFlow();
@@ -8013,7 +7610,7 @@ Submission Date: ${finalData.submissionDate}`
 
             if (
                 serviceKey ===
-                    "doors_windows" &&
+                "doors_windows" &&
                 choice === "YES"
             ) {
                 resetDoorsWindowsFaqFlow();
@@ -8034,7 +7631,7 @@ Submission Date: ${finalData.submissionDate}`
 
             if (
                 serviceKey ===
-                    "flooring_installation" &&
+                "flooring_installation" &&
                 choice === "YES"
             ) {
                 resetFlooringInteriorFaqFlow();
@@ -8055,7 +7652,7 @@ Submission Date: ${finalData.submissionDate}`
 
             if (
                 serviceKey ===
-                    "home_addition_construction" &&
+                "home_addition_construction" &&
                 choice === "YES"
             ) {
                 resetHomeAdditionFaqFlow();
@@ -8076,7 +7673,7 @@ Submission Date: ${finalData.submissionDate}`
 
             if (
                 serviceKey ===
-                    "kitchen_remodeling" &&
+                "kitchen_remodeling" &&
                 choice === "YES"
             ) {
                 resetKitchenRemodelingFaqFlow();
@@ -8097,7 +7694,7 @@ Submission Date: ${finalData.submissionDate}`
 
             if (
                 serviceKey ===
-                    "bathroom_remodeling" &&
+                "bathroom_remodeling" &&
                 choice === "YES"
             ) {
                 resetBathroomRemodelingFaqFlow();
@@ -8118,7 +7715,7 @@ Submission Date: ${finalData.submissionDate}`
 
             if (
                 serviceKey ===
-                    "plumbing_fixture_installation" &&
+                "plumbing_fixture_installation" &&
                 choice === "YES"
             ) {
                 resetPlumbingInstallationFaqFlow();
@@ -8139,7 +7736,7 @@ Submission Date: ${finalData.submissionDate}`
 
             if (
                 serviceKey ===
-                    "roof_installation" &&
+                "roof_installation" &&
                 choice === "YES"
             ) {
                 resetRoofInstallationFaqFlow();
@@ -8161,7 +7758,7 @@ Submission Date: ${finalData.submissionDate}`
             if (
                 choice === "YES" &&
                 ADDITIONAL_SERVICE_FAQS[
-                    serviceKey
+                serviceKey
                 ]
             ) {
                 startAdditionalServiceFaqFlow(
@@ -8359,7 +7956,7 @@ Submission Date: ${finalData.submissionDate}`
                         body: JSON.stringify({
                             message:
                                 activeEstimateServiceKey &&
-                                !options.skipEstimateContext
+                                    !options.skipEstimateContext
                                     ? `Estimate request for ${ESTIMATE_INFO[activeEstimateServiceKey].name}. Customer details: ${message}`
                                     : message,
 
@@ -8414,7 +8011,7 @@ Submission Date: ${finalData.submissionDate}`
 
                 const completed =
                     data.conversation_status ===
-                        "lead_completed" ||
+                    "lead_completed" ||
                     data.status === "lead_completed" ||
                     data.mode === "lead_completed" ||
                     data.disable_input === true;
@@ -8519,7 +8116,7 @@ Submission Date: ${finalData.submissionDate}`
             moreServicesButton
                 .querySelector("span")
                 .textContent =
-                    "Show Fewer Services";
+                "Show Fewer Services";
 
             quickActions.appendChild(
                 moreServicesButton
@@ -8543,7 +8140,7 @@ Submission Date: ${finalData.submissionDate}`
             moreServicesButton
                 .querySelector("span")
                 .textContent =
-                    "More Services";
+                "More Services";
 
             quickActions.insertBefore(
                 moreServicesButton,
@@ -9093,9 +8690,9 @@ Submission Date: ${finalData.submissionDate}`
                     error &&
                     (
                         error.name ===
-                            "NotAllowedError" ||
+                        "NotAllowedError" ||
                         error.name ===
-                            "SecurityError"
+                        "SecurityError"
                     );
 
                 showVoiceStatus(
@@ -9417,4 +9014,5 @@ Submission Date: ${finalData.submissionDate}`
         initialiseVoiceInput();
     </script>
 </body>
+
 </html>
