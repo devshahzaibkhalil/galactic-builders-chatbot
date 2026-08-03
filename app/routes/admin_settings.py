@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app.models.admin_user import AdminUser
 from app.security.permissions import PermissionDeniedError, require_permission
-from app.services import dashboard_settings_service
+from app.services import dashboard_settings_service, smtp_transport
 from app.services.audit_service import record as record_audit
 from app.services.authentication_service import WeakPasswordError, set_password, verify_password
 from app.services.dashboard_settings_service import InvalidColorError, get_theme, reset_theme, update_theme
@@ -256,3 +256,120 @@ def update_notification_settings():
         session.close()
 
     return jsonify({"lead_notification_email": info["email"], "source": info["source"]})
+
+
+# ---------------------------------------------------------------------------
+# Email diagnostics
+# ---------------------------------------------------------------------------
+
+@admin_settings_bp.get("/email-diagnostics")
+@login_required
+@_require("configure_notification_recipients")
+def email_diagnostics():
+    """Reports whether outbound email can actually work, without sending.
+
+    Every value is reported as set/not-set only; no key or secret is ever
+    returned in the response body.
+    """
+    session_factory = current_app.extensions["db_session_factory"]
+    session = session_factory()
+    try:
+        info = dashboard_settings_service.get_lead_notification_email_source(session)
+        session.commit()
+    finally:
+        session.close()
+
+    provider = smtp_transport.active_provider()
+    from_address = smtp_transport._from_address()
+
+    checks = {
+        "provider": provider,
+        "configured": smtp_transport.is_configured(),
+        "from_address": from_address or None,
+        "from_name": smtp_transport._from_name(),
+        "recipient": info["email"],
+        "recipient_source": info["source"],
+    }
+    if provider == "mailjet":
+        checks["mailjet_api_key_set"] = bool(smtp_transport._clean("MAILJET_API_KEY"))
+        checks["mailjet_secret_key_set"] = bool(smtp_transport._clean("MAILJET_SECRET_KEY"))
+    else:
+        checks["smtp_host_set"] = bool(smtp_transport._clean("SMTP_HOST"))
+
+    problems = []
+    if not checks["configured"]:
+        if provider == "mailjet":
+            problems.append(
+                "Mailjet is not fully configured. Both MAILJET_API_KEY and "
+                "MAILJET_SECRET_KEY must be set."
+            )
+        else:
+            problems.append("SMTP_HOST is not set.")
+    if not from_address:
+        problems.append("EMAIL_FROM_ADDRESS is not set, so there is no sender address.")
+    if not checks["recipient"]:
+        problems.append(
+            "No lead notification recipient. Set one in Settings -> Lead notifications "
+            "or via the LEAD_NOTIFICATION_EMAIL environment variable."
+        )
+
+    checks["problems"] = problems
+    checks["ready"] = not problems
+    return jsonify(checks)
+
+
+@admin_settings_bp.post("/email-diagnostics/test")
+@login_required
+@_require("configure_notification_recipients")
+def email_diagnostics_test():
+    """Sends a real test email and reports the outcome.
+
+    On failure the reason is written to the application log by
+    smtp_transport; check the Render Logs tab for the provider's exact
+    response.
+    """
+    payload = request.get_json(silent=True) or {}
+    recipient = (payload.get("recipient") or "").strip()
+
+    session_factory = current_app.extensions["db_session_factory"]
+    session = session_factory()
+    try:
+        if not recipient:
+            recipient = dashboard_settings_service.get_lead_notification_email(session) or ""
+        session.commit()
+    finally:
+        session.close()
+
+    if not recipient:
+        return jsonify({
+            "sent": False,
+            "error": "no_recipient",
+            "message": "No recipient configured and none supplied.",
+        }), 422
+
+    result = validate_email(recipient)
+    if not result["valid"]:
+        return jsonify({
+            "sent": False,
+            "error": "invalid_email",
+            "message": result["message"] or "Invalid email address.",
+        }), 422
+
+    sent = smtp_transport.send(
+        to=result["normalized_value"],
+        subject="Galactic Builders email test",
+        body=(
+            "Outbound email is configured correctly. New lead notifications "
+            "will be delivered automatically."
+        ),
+    )
+    return jsonify({
+        "sent": sent,
+        "provider": smtp_transport.active_provider(),
+        "recipient": result["normalized_value"],
+        "message": (
+            "Test email sent."
+            if sent else
+            "Send failed. Check the application logs for the provider's exact response."
+        ),
+    }), (200 if sent else 502)
