@@ -3,10 +3,10 @@ bell icon): new conversation, new lead, appointment booked, and unanswered
 questions. Notifications are always stored in SQLite and shown via the
 bell icon - that part requires no configuration.
 
-An optional email copy is sent through app/services/smtp_transport.py if
-SMTP_HOST is configured in the environment; if it isn't, notifications
-still work normally and no email is attempted. No email credentials are
-required unless the admin explicitly sets them.
+An optional email copy is sent through app/services/smtp_transport.py when
+email is configured (Mailjet by default; see that module). If it isn't,
+notifications still work normally and no email is attempted. No email
+credentials are required unless the admin explicitly sets them.
 """
 from __future__ import annotations
 
