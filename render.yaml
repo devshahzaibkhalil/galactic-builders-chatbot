@@ -33,20 +33,18 @@ services:
         value: "https://galacticbuilldersllc.com,https://www.galacticbuilldersllc.com"
       - key: ALLOWED_FRAME_ANCESTORS
         value: "https://galacticbuilldersllc.com,https://www.galacticbuilldersllc.com"
-      # Email — fill in with your real SMTP provider before going live;
-      # lead notifications silently no-op without these.
+      # Email — sent over the Mailjet HTTPS API, not SMTP, because Render
+      # blocks outbound SMTP ports. Mailjet verifies a single sender address
+      # by emailing it a confirmation link, so no domain DNS access is needed.
+      # Lead notifications silently no-op until these are filled in.
       - key: EMAIL_PROVIDER
+        value: mailjet
+      - key: MAILJET_API_KEY
+        sync: false
+      - key: MAILJET_SECRET_KEY
         sync: false
       - key: EMAIL_FROM_NAME
         value: "Galactic Builders"
-      - key: SMTP_HOST
-        sync: false
-      - key: SMTP_PORT
-        sync: false
-      - key: SMTP_USERNAME
-        sync: false
-      - key: SMTP_PASSWORD
-        sync: false
       - key: EMAIL_FROM_ADDRESS
         sync: false
       - key: LEAD_NOTIFICATION_EMAIL
