@@ -13,12 +13,15 @@ next_retry_at()/is_due().
 """
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timedelta, timezone
 from typing import Callable
 
 from sqlalchemy.orm import Session
 
 from app.models.email_notification import EmailNotification, NotificationStatus
+
+logger = logging.getLogger("galactic.email_jobs")
 
 RETRY_DELAYS: list[timedelta] = [
     timedelta(seconds=0),   # attempt 1 (immediate)
@@ -52,13 +55,28 @@ def attempt_notification(session: Session, notification: EmailNotification, send
     try:
         send(notification)
     except Exception:
-        if notification.attempt_count >= MAX_ATTEMPTS:
-            notification.status = NotificationStatus.FAILED
-        else:
-            notification.status = NotificationStatus.RETRYING
+        # Log with the traceback. Without this the failure reason was lost
+        # entirely: the row recorded only RETRYING/FAILED, so a missing
+        # recipient or a rejected sender looked identical to no email at all.
+        exhausted = notification.attempt_count >= MAX_ATTEMPTS
+        logger.exception(
+            "Email notification %s (%s) for lead %s failed on attempt %s/%s - marking %s",
+            notification.id,
+            notification.notification_type,
+            notification.lead_id,
+            notification.attempt_count,
+            MAX_ATTEMPTS,
+            "FAILED" if exhausted else "RETRYING",
+        )
+        notification.status = NotificationStatus.FAILED if exhausted else NotificationStatus.RETRYING
         session.add(notification)
         return notification.status
 
+    logger.info(
+        "Email notification %s (%s) for lead %s sent on attempt %s",
+        notification.id, notification.notification_type, notification.lead_id,
+        notification.attempt_count,
+    )
     notification.status = NotificationStatus.SENT
     session.add(notification)
     return notification.status
