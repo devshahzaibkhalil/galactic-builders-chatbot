@@ -10,7 +10,7 @@ from app.jobs.email_jobs import attempt_notification
 from app.models.email_notification import EmailNotification
 from app.models.lead import Lead
 from app.security.rate_limits import LEAD_SUBMISSION_RATE_LIMIT, limiter
-from app.services import smtp_transport
+from app.services import dashboard_settings_service, smtp_transport
 from app.services.email_service import send_admin_notification, send_customer_confirmation
 from app.services.lead_service import (
     InterestNotConfirmedError,
@@ -54,9 +54,18 @@ def _send_lead_email(session: Session, lead_id: str, notification_type: str) -> 
 
     def _send(_notification: EmailNotification) -> None:
         if notification_type == "admin_lead":
-            recipient = os.environ.get("LEAD_NOTIFICATION_EMAIL")
+            # Resolve through dashboard_settings_service so a recipient saved
+            # in Admin -> Settings -> Lead notifications is honoured. It falls
+            # back to the LEAD_NOTIFICATION_EMAIL env var on its own. Reading
+            # the env var directly here used to bypass the dashboard override
+            # entirely, so a dashboard-only configuration silently sent nothing.
+            recipient = dashboard_settings_service.get_lead_notification_email(session)
             if not recipient:
-                raise RuntimeError("LEAD_NOTIFICATION_EMAIL is not set.")
+                raise RuntimeError(
+                    "No lead notification recipient configured. Set one in Admin -> "
+                    "Settings -> Lead notifications, or set the LEAD_NOTIFICATION_EMAIL "
+                    "environment variable."
+                )
             dashboard_url = os.environ.get("ADMIN_DASHBOARD_URL", "")
             send_admin_notification(lead, recipient=recipient, dashboard_url=dashboard_url, transport=_transport)
         elif notification_type == "customer_confirmation":
